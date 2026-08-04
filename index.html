@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Manual de uso — Monitoreo Hídrico y de Vegetación</title>
+<meta name="description" content="Guía de interpretación de las variables hídricas y de vegetación de la app nacional CyanoSat · Envsat (ERA5-Land, MODIS, Sentinel-2)." />
+<style>
+  :root {
+    --paper: #F4F7F6;
+    --paper-raised: #FFFFFF;
+    --ink: #142229;
+    --ink-soft: #4C5E63;
+    --ink-faint: #7C8B8E;
+    --water: #1B6E8C;
+    --water-soft: #E4EFF1;
+    --vegetation: #4B6B3C;
+    --vegetation-soft: #ECF1E6;
+    --ember: #A85A2A;
+    --ember-soft: #F5E9DE;
+    --line: #D2DBD8;
+    --line-strong: #AFC0BC;
+    --code-bg: #EAF0EE;
+    --shadow: 0 1px 2px rgba(20,34,41,0.06), 0 6px 20px rgba(20,34,41,0.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0F1719;
+      --paper-raised: #16211F;
+      --ink: #E4EDEA;
+      --ink-soft: #AEC0BE;
+      --ink-faint: #7F918E;
+      --water: #6BC0DE;
+      --water-soft: #16333C;
+      --vegetation: #9AC084;
+      --vegetation-soft: #1D2A18;
+      --ember: #E39A62;
+      --ember-soft: #2E2115;
+      --line: #263634;
+      --line-strong: #354744;
+      --code-bg: #17211F;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0F1719;
+    --paper-raised: #16211F;
+    --ink: #E4EDEA;
+    --ink-soft: #AEC0BE;
+    --ink-faint: #7F918E;
+    --water: #6BC0DE;
+    --water-soft: #16333C;
+    --vegetation: #9AC084;
+    --vegetation-soft: #1D2A18;
+    --ember: #E39A62;
+    --ember-soft: #2E2115;
+    --line: #263634;
+    --line-strong: #354744;
+    --code-bg: #17211F;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"] {
+    --paper: #F4F7F6;
+    --paper-raised: #FFFFFF;
+    --ink: #142229;
+    --ink-soft: #4C5E63;
+    --ink-faint: #7C8B8E;
+    --water: #1B6E8C;
+    --water-soft: #E4EFF1;
+    --vegetation: #4B6B3C;
+    --vegetation-soft: #ECF1E6;
+    --ember: #A85A2A;
+    --ember-soft: #F5E9DE;
+    --line: #D2DBD8;
+    --line-strong: #AFC0BC;
+    --code-bg: #EAF0EE;
+    --shadow: 0 1px 2px rgba(20,34,41,0.06), 0 6px 20px rgba(20,34,41,0.05);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    font-weight: 600;
+    text-wrap: balance;
+    color: var(--ink);
+    margin: 0;
+  }
+  code, .mono {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  a { color: var(--water); }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--water);
+    outline-offset: 2px;
+  }
+
+  /* ── Layout shell ───────────────────────────────────────────── */
+  .shell {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  @media (max-width: 880px) {
+    .shell { grid-template-columns: 1fr; }
+  }
+
+  /* ── Header ─────────────────────────────────────────────────── */
+  .masthead {
+    grid-column: 1 / -1;
+    padding: 56px max(24px, calc((100% - 1132px) / 2)) 40px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .masthead::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(100deg,
+        transparent 0, transparent 68px,
+        var(--water-soft) 68px, var(--water-soft) 69px);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--water);
+    margin: 0 0 14px;
+    position: relative;
+  }
+  .masthead h1 {
+    font-size: clamp(32px, 4.4vw, 46px);
+    line-height: 1.08;
+    max-width: 16ch;
+    position: relative;
+  }
+  .masthead p.lede {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin: 18px 0 0;
+    position: relative;
+  }
+  .masthead .meta {
+    display: flex; flex-wrap: wrap; gap: 8px 18px;
+    margin-top: 22px;
+    font-size: 13px;
+    color: var(--ink-faint);
+    position: relative;
+  }
+  .masthead .meta span { white-space: nowrap; }
+
+  /* ── TOC ────────────────────────────────────────────────────── */
+  nav.toc {
+    padding: 32px 20px 40px;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+  @media (max-width: 880px) {
+    nav.toc {
+      position: static; max-height: none;
+      padding: 20px max(24px, calc((100% - 1132px) / 2)) 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    nav.toc ol { columns: 2; column-gap: 24px; }
+  }
+  nav.toc .toc-label {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-faint); margin: 0 0 10px 8px;
+  }
+  nav.toc ol {
+    list-style: none; margin: 0; padding: 0;
+    counter-reset: toc;
+  }
+  nav.toc li { margin: 0; break-inside: avoid; }
+  nav.toc a {
+    display: block;
+    padding: 7px 8px;
+    border-radius: 7px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.35;
+  }
+  nav.toc a:hover { background: var(--water-soft); color: var(--water); }
+  nav.toc a .num {
+    display: inline-block; width: 1.6em;
+    font-family: ui-monospace, monospace; font-size: 12px; color: var(--ink-faint);
+  }
+
+  /* ── Main content ───────────────────────────────────────────── */
+  main {
+    padding: 44px max(24px, 48px) 100px 40px;
+    min-width: 0;
+  }
+  @media (max-width: 880px) {
+    main { padding: 36px max(24px, calc((100% - 1132px) / 2)) 100px; }
+  }
+
+  section.block { margin: 0 0 64px; scroll-margin-top: 20px; }
+  section.block:last-child { margin-bottom: 24px; }
+
+  .block-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+  .block-head .tag {
+    font-family: ui-monospace, monospace;
+    font-size: 13px; color: var(--paper-raised);
+    background: var(--ink-faint);
+    padding: 2px 8px; border-radius: 5px;
+    flex-shrink: 0;
+  }
+  .block.theme-water .block-head .tag { background: var(--water); }
+  .block.theme-veg   .block-head .tag { background: var(--vegetation); }
+  .block.theme-ember .block-head .tag { background: var(--ember); }
+
+  section.block h2 { font-size: 26px; }
+  section.block > .dek {
+    color: var(--ink-soft); max-width: 68ch; margin: 14px 0 28px; font-size: 15.5px;
+  }
+
+  p { max-width: 68ch; margin: 0 0 14px; }
+  p:last-child { margin-bottom: 0; }
+  .prose ul, .prose ol { max-width: 66ch; padding-left: 22px; margin: 0 0 14px; }
+  .prose li { margin-bottom: 6px; }
+
+  /* ── Variable / indicator card ──────────────────────────────── */
+  .var-card {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin: 0 0 16px;
+    box-shadow: var(--shadow);
+  }
+  .var-card h3 {
+    font-size: 17.5px;
+    display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  }
+  .var-card h3 .unit {
+    font-family: ui-monospace, monospace;
+    font-size: 12.5px; font-weight: 400;
+    color: var(--ink-faint);
+  }
+  .var-card .field {
+    display: grid;
+    grid-template-columns: 108px minmax(0,1fr);
+    gap: 4px 14px;
+    margin-top: 12px;
+    font-size: 14.5px;
+  }
+  .var-card .field dt {
+    color: var(--ink-faint);
+    font-size: 12px; letter-spacing: 0.03em; text-transform: uppercase;
+    padding-top: 2px;
+  }
+  .var-card .field dd { margin: 0; color: var(--ink); }
+  @media (max-width: 560px) {
+    .var-card .field { grid-template-columns: 1fr; }
+    .var-card .field dt { margin-top: 10px; }
+  }
+  .var-grid { display: grid; gap: 16px; }
+
+  /* ── Callouts ───────────────────────────────────────────────── */
+  .callout {
+    border-left: 3px solid var(--water);
+    background: var(--water-soft);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 15px;
+  }
+  .callout.ember { border-color: var(--ember); background: var(--ember-soft); }
+  .callout.veg { border-color: var(--vegetation); background: var(--vegetation-soft); }
+  .callout strong { display: block; margin-bottom: 4px; font-size: 13px; letter-spacing: 0.02em; text-transform: uppercase; }
+  .callout p { max-width: none; }
+
+  /* ── Example / interpretation strip ────────────────────────── */
+  .example {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 18px 0;
+  }
+  @media (max-width: 640px) { .example { grid-template-columns: 1fr; } }
+  .example > div { background: var(--paper-raised); padding: 16px 18px; }
+  .example .k { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px; }
+  .example .v { font-size: 15px; }
+  .example .v .badge { font-weight: 600; }
+
+  /* ── Data source table ──────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+  thead th {
+    text-align: left; font-family: ui-monospace, monospace; font-weight: 500;
+    font-size: 12px; letter-spacing: 0.03em; text-transform: uppercase;
+    color: var(--ink-faint);
+    background: var(--code-bg);
+    padding: 10px 14px; border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  tbody td { padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody td:first-child { font-family: ui-monospace, monospace; font-size: 13px; color: var(--water); white-space: nowrap; }
+
+  /* ── Flow steps (1–5) ───────────────────────────────────────── */
+  .flow { display: grid; gap: 12px; margin: 22px 0 8px; }
+  .flow-step {
+    display: grid; grid-template-columns: 40px 1fr; gap: 16px;
+    align-items: start;
+  }
+  .flow-step .n {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: ui-monospace, monospace; font-size: 16px; font-weight: 600;
+    background: var(--water-soft); color: var(--water);
+    border: 1px solid var(--line);
+  }
+  .flow-step h4 { font-size: 15.5px; margin-bottom: 3px; }
+  .flow-step p { font-size: 14.5px; color: var(--ink-soft); }
+
+  /* ── Alert pair demo (nivel absoluto vs anomalía) ─────────────*/
+  .pair-demo {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    margin: 18px 0;
+  }
+  @media (max-width: 640px) { .pair-demo { grid-template-columns: 1fr; } }
+  .pill-card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    background: var(--paper-raised);
+  }
+  .pill-card .pill {
+    display: inline-block; font-size: 12px; font-weight: 600;
+    padding: 3px 10px; border-radius: 20px; margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  .pill-card.abs .pill { background: var(--ember-soft); color: var(--ember); }
+  .pill-card.anom .pill { background: var(--water-soft); color: var(--water); }
+  .pill-card p { font-size: 14px; }
+
+  footer {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--line);
+    padding: 28px max(24px, calc((100% - 1132px) / 2)) 40px;
+    font-size: 13px; color: var(--ink-faint);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  }
+
+  hr.rule { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <header class="masthead">
+    <p class="eyebrow">CyanoSat · Envsat</p>
+    <h1>Monitoreo hídrico y de vegetación de Argentina</h1>
+    <p class="lede">Manual de interpretación: qué mide cada variable, para qué sirve y cómo leer un resultado — con datos de ERA5-Land, MODIS y Sentinel-2 sobre todo el territorio nacional.</p>
+    <div class="meta">
+      <span>Versión nacional · ERA5 / MODIS / Sentinel-2</span>
+      <span>·</span>
+      <span>Actualizado agosto 2026</span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Tabla de contenidos">
+    <p class="toc-label">En este manual</p>
+    <ol>
+      <li><a href="#intro"><span class="num">00</span>Qué es esta app</a></li>
+      <li><a href="#flujo"><span class="num">00</span>Cómo se usa</a></li>
+      <li><a href="#s1"><span class="num">01</span>Área de interés</a></li>
+      <li><a href="#s2"><span class="num">02</span>Período de análisis</a></li>
+      <li><a href="#s3"><span class="num">03</span>Variables hídricas</a></li>
+      <li><a href="#alertas"><span class="num">—</span>Cómo leer las alertas</a></li>
+      <li><a href="#s4"><span class="num">04</span>Variables de vegetación</a></li>
+      <li><a href="#s5"><span class="num">05</span>Alta resolución (S2)</a></li>
+      <li><a href="#fuentes"><span class="num">—</span>Fuentes de datos</a></li>
+      <li><a href="#buenas-practicas"><span class="num">—</span>Buenas prácticas</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <!-- ───────────────────────── INTRO ───────────────────────── -->
+    <section class="block" id="intro">
+      <div class="block-head"><span class="tag">Intro</span></div>
+      <h2>Qué es esta app</h2>
+      <div class="prose">
+        <p>Es una aplicación de Google Earth Engine que sigue la dinámica del agua y la vegetación en <strong>cualquier punto de Argentina</strong>: cuánta agua entra, dónde se acumula, qué tan estresada está la vegetación y dónde hay riesgo de incendio o inundación. Nació como una herramienta acotada a la provincia de Buenos Aires y se reconstruyó para trabajar a escala nacional, reemplazando los productos calculados a mano por fuentes satelitales que cubren todo el país de forma homogénea.</p>
+        <p>No hace falta subir ningún dato propio: todo se calcula al vuelo a partir de tres fuentes públicas —</p>
+        <ul>
+          <li><strong>ERA5-Land</strong> (reanálisis climático de Copernicus/ECMWF) para temperatura, humedad de suelo, lluvia, evapotranspiración y escurrimiento, día a día;</li>
+          <li><strong>MODIS</strong> para vegetación, estrés hídrico e incendios cada 8 días a 500 m;</li>
+          <li><strong>Sentinel-2</strong> para los mismos índices de vegetación a mayor detalle (10-20 m), sobre áreas chicas.</li>
+        </ul>
+        <p>Este manual no explica dónde hacer clic — eso ya es bastante intuitivo dentro de la app. Se concentra en lo que suele hacer falta consultar después: <strong>qué significa cada variable, para qué se usa y cómo leer el número o la alerta que devuelve.</strong></p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── FLUJO ───────────────────────── -->
+    <section class="block" id="flujo">
+      <div class="block-head"><span class="tag">Flujo</span></div>
+      <h2>Cómo se usa</h2>
+      <p class="dek">La app tiene cinco pasos numerados. Los dos primeros son transversales: el área y el período que elegís ahí se reutilizan en todas las variables de las secciones 3, 4 y 5 — no hay que volver a definirlos para cada análisis.</p>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="n">1</div>
+          <div><h4>Área de interés</h4><p>Un departamento, una cuenca hidrográfica, o un polígono dibujado a mano.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="n">2</div>
+          <div><h4>Período de análisis</h4><p>Rango de fechas — puede ser una semana, un mes o varios años; el resto de la app se adapta a cualquier largo de ventana.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="n">3</div>
+          <div><h4>Variables hídricas</h4><p>Temperatura, humedad de suelo, lluvia, escurrimiento y sus derivadas (ERA5-Land, resolución diaria).</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="n">4</div>
+          <div><h4>Variables de vegetación</h4><p>NDVI, estado hídrico de la vegetación e incendios (MODIS, cada 8 días).</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="n">5</div>
+          <div><h4>Alta resolución</h4><p>Los mismos índices de vegetación, a 10-20 m, para parcelas o áreas chicas (Sentinel-2).</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── SECCIÓN 1 ───────────────────────── -->
+    <section class="block theme-water" id="s1">
+      <div class="block-head"><span class="tag">01</span></div>
+      <h2>Área de interés</h2>
+      <p class="dek">Tres formas de definir dónde se calcula todo lo demás. La elección correcta depende de qué pregunta te estás haciendo.</p>
+      <div class="prose">
+        <ul>
+          <li><strong>Departamentos</strong> — la unidad administrativa (IGN). Es la opción natural si la pregunta es "¿cómo está tal departamento/partido?" o si vas a comparar el resultado con estadísticas censales, agropecuarias o administrativas que también vienen por departamento.</li>
+          <li><strong>Cuencas</strong> — subcuencas hidrográficas (HydroATLAS, nivel Pfafstetter 6). Conviene cuando la pregunta es sobre agua en sí misma: escurrimiento, inundación, disponibilidad — porque el agua no respeta límites administrativos, sigue la topografía.</li>
+          <li><strong>Dibujar polígono</strong> — un área personalizada, trazada a mano sobre el mapa. Es la única opción razonable para la sección 5 (alta resolución), donde conviene acotarse a una parcela o un área chica en vez de una unidad administrativa grande.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── SECCIÓN 2 ───────────────────────── -->
+    <section class="block theme-water" id="s2">
+      <div class="block-head"><span class="tag">02</span></div>
+      <h2>Período de análisis</h2>
+      <div class="prose">
+        <p>Un rango de fechas único, compartido por el resto de la app. No hay un largo "correcto": una ventana corta (días) sirve para seguir un evento puntual —una tormenta, el arranque de un incendio—; una ventana larga (meses, años) sirve para ver tendencia o comparar contra el promedio histórico del lugar.</p>
+        <p>El único caso especial es <a href="#s4">NBR — severidad de quemado</a>, que usa el período de otra manera: lo parte al medio y compara la primera mitad contra la segunda (ver esa sección).</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── SECCIÓN 3 — HÍDRICAS ───────────────────────── -->
+    <section class="block theme-water" id="s3">
+      <div class="block-head"><span class="tag">03</span></div>
+      <h2>Variables hídricas — ERA5-Land</h2>
+      <p class="dek">Catorce variables medidas directamente por el reanálisis climático, más cinco derivadas calculadas a partir de ellas. Todas a resolución diaria, ~11 km de celda.</p>
+
+      <h3 style="font-size:19px;margin-bottom:12px;">Temperatura</h3>
+      <div class="var-grid">
+        <div class="var-card">
+          <h3>Temperatura del aire a 2 m <span class="unit">°C</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>Temperatura del aire a la altura estándar de medición.</dd>
+            <dt>Sirve para</dt><dd>Riesgo de helada, olas de calor, planificación de siembra y cosecha.</dd>
+            <dt>Cómo leerla</dt><dd>El valor es el promedio del período elegido. Si necesitás el pico de calor o de frío de un solo día, acotá el período a esa fecha.</dd>
+          </dl>
+        </div>
+        <div class="var-card">
+          <h3>Temperatura de suelo — 4 profundidades <span class="unit">°C · 7 / 28 / 100 / 289 cm</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>Temperatura del suelo en cuatro capas, de superficial a profunda.</dd>
+            <dt>Sirve para</dt><dd>Las capas superficiales (7-28 cm) importan para germinación y riesgo de helada en raíz; las profundas (100-289 cm) cambian lento y reflejan la inercia térmica del perfil — útiles para ver si un evento de frío o calor es pasajero o ya penetró en el suelo.</dd>
+            <dt>Cómo leerla</dt><dd>Compará las cuatro profundidades entre sí: si la superficial ya bajó pero la profunda no, el frío es reciente y superficial.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <h3 style="font-size:19px;margin:28px 0 12px;">Agua en el suelo</h3>
+      <div class="var-grid">
+        <div class="var-card">
+          <h3>Humedad de suelo — 4 profundidades <span class="unit">m³/m³ · 7 / 28 / 100 / 289 cm</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>Fracción del volumen de suelo ocupada por agua, en cada una de las cuatro capas.</dd>
+            <dt>Sirve para</dt><dd>Diagnóstico de sequía agrícola (las capas 7-28 cm son las que más le importan al cultivo en germinación) y de reserva hídrica profunda (100-289 cm, la que sostiene a un cultivo en un período seco corto).</dd>
+            <dt>Cómo leerla</dt><dd>La app ya clasifica el valor en 5 niveles — muy seco (&lt;0.11), seco (0.11–0.18), húmedo (0.18–0.30), muy húmedo (0.30–0.40) y sobresaturado (&gt;0.40) — de referencia general FAO/USDA. Es una aproximación de "suelo promedio": la textura real de cada lote (arenoso vs. arcilloso) corre esos números, así que conviene mirarlo junto con la anomalía histórica del punto exacto (ver <a href="#alertas">cómo leer las alertas</a>).</dd>
+          </dl>
+        </div>
+      </div>
+
+      <h3 style="font-size:19px;margin:28px 0 12px;">Precipitación y balance</h3>
+      <div class="var-grid">
+        <div class="var-card">
+          <h3>Precipitación <span class="unit">mm/día</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>Lluvia total (incluye nieve derretida), como promedio diario del período.</dd>
+            <dt>Sirve para</dt><dd>El insumo base de casi todo lo demás: balance hídrico, riesgo de inundación, disponibilidad de agua.</dd>
+            <dt>Cómo leerla</dt><dd>Es un promedio diario, no la lluvia acumulada del período — un valor de 5 mm/día en una ventana de 10 días equivale a ~50 mm acumulados. Para saber cuánto llovió en total, multiplicá por la cantidad de días.</dd>
+          </dl>
+        </div>
+        <div class="var-card">
+          <h3>Evapotranspiración potencial (ETP) y evaporación real <span class="unit">mm/día</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>ETP es cuánta agua <em>podría</em> perderse por evaporación y transpiración si no hubiera límite de agua disponible; evaporación real es cuánta se pierde <em>de hecho</em>.</dd>
+            <dt>Sirve para</dt><dd>La brecha entre las dos es la señal de estrés hídrico: cuando el suelo no tiene agua suficiente, la evaporación real se queda muy por debajo de la ETP.</dd>
+            <dt>Cómo leerla</dt><dd>No se leen aisladas — mirá la variable derivada <strong>Ratio de Evaporación</strong> más abajo, que ya calcula esa brecha como porcentaje.</dd>
+          </dl>
+        </div>
+        <div class="var-card">
+          <h3>Escurrimiento — total y superficial <span class="unit">mm/día</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>Agua que corre sobre o a través del suelo sin quedar almacenada. El superficial es la que corre por encima; el total incluye también el flujo subsuperficial.</dd>
+            <dt>Sirve para</dt><dd>Riesgo de inundación y de erosión — un escurrimiento superficial alto y repentino es la señal más directa de anegamiento.</dd>
+            <dt>Cómo leerla</dt><dd>Valores altos sostenidos en el tiempo (no un solo pico) son la señal de riesgo real; un pico aislado después de una lluvia fuerte es normal y no necesariamente preocupante.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <h3 style="font-size:19px;margin:28px 0 12px;">Variables derivadas</h3>
+      <p style="max-width:68ch;color:var(--ink-soft);font-size:14.5px;margin:-4px 0 16px;">Combinaciones de las variables de arriba, pensadas para responder una pregunta concreta de un solo vistazo.</p>
+      <div class="var-grid">
+        <div class="var-card">
+          <h3>Agua infiltrada <span class="unit">mm/día · ppt − escurrimiento sup. − evaporación</span></h3>
+          <dl class="field">
+            <dt>Responde</dt><dd>De toda la lluvia que cayó, ¿cuánta quedó disponible para recargar el suelo (en vez de escurrir o evaporarse)?</dd>
+            <dt>Sirve para</dt><dd>Estimar recarga de napas y reserva de agua útil para el cultivo.</dd>
+          </dl>
+        </div>
+        <div class="var-card">
+          <h3>Escurrimiento subsuperficial <span class="unit">mm/día · esc. total − esc. superficial</span></h3>
+          <dl class="field">
+            <dt>Responde</dt><dd>¿Cuánta agua drena lateralmente dentro del perfil de suelo, sin llegar a correr por la superficie?</dd>
+            <dt>Sirve para</dt><dd>Entender drenaje interno — relevante en suelos con capas poco permeables, donde el agua se mueve de costado antes de infiltrar en profundidad.</dd>
+          </dl>
+        </div>
+        <div class="var-card">
+          <h3>Ratio de Evaporación <span class="unit">% · evaporación real / ETP × 100</span></h3>
+          <dl class="field">
+            <dt>Responde</dt><dd>De toda el agua que la atmósfera "pide", ¿qué porcentaje el suelo realmente puede entregar?</dd>
+            <dt>Sirve para</dt><dd>Es el indicador de estrés hídrico más directo de los cinco. 100% = el suelo satisface toda la demanda atmosférica (sin estrés); valores bajos indican que el cultivo no tiene el agua que necesitaría.</dd>
+            <dt>Cómo leerla</dt><dd>&lt;40% estrés severo · 40–60% déficit moderado · &gt;80% balance favorable.</dd>
+          </dl>
+        </div>
+        <div class="var-card">
+          <h3>Balance Hídrico <span class="unit">mm/día · ppt − ETP</span></h3>
+          <dl class="field">
+            <dt>Responde</dt><dd>En términos simples, ¿entró más agua de la que se perdió, o menos?</dd>
+            <dt>Sirve para</dt><dd>Foto rápida de superávit o déficit hídrico regional — el resumen de "cómo viene el agua" en una sola cifra.</dd>
+            <dt>Cómo leerla</dt><dd>Positivo = superávit (entra más de lo que se pierde); negativo = déficit — clave como señal temprana de sequía.</dd>
+          </dl>
+        </div>
+        <div class="var-card">
+          <h3>Tasa de Precipitación (SDII) <span class="unit">mm/día lluvioso · suma ppt ÷ días con ppt &gt; 0</span></h3>
+          <dl class="field">
+            <dt>Responde</dt><dd>Cuando llueve, ¿llueve fuerte o llueve poco? A diferencia del promedio diario general, no se diluye con los días secos del período.</dd>
+            <dt>Sirve para</dt><dd>Distinguir un régimen de lluvias frecuentes-suaves de uno de eventos intensos-espaciados — dos climas muy distintos que pueden tener la misma precipitación promedio.</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── ALERTAS ───────────────────────── -->
+    <section class="block" id="alertas">
+      <div class="block-head"><span class="tag">Clave</span></div>
+      <h2>Cómo leer las alertas</h2>
+      <p class="dek">Cada variable devuelve dos lecturas independientes, y hay que mirar las dos juntas — una sola no alcanza para saber si una situación es normal o no.</p>
+
+      <div class="pair-demo">
+        <div class="pill-card abs">
+          <span class="pill">Nivel absoluto</span>
+          <p><strong>¿Es alto o bajo en sí mismo?</strong> Un umbral fijo por variable (ej. temperatura &gt; 35 °C = ola de calor), igual en cualquier lugar del país. Es información inmediata pero genérica: un umbral pensado para "un suelo promedio" no distingue Patagonia de Misiones.</p>
+        </div>
+        <div class="pill-card anom">
+          <span class="pill">Anomalía histórica</span>
+          <p><strong>¿Es raro para este lugar y este momento?</strong> Compara el valor actual contra el propio histórico 2015-2025 de esa misma zona y esa misma época del año. Se ajusta sola a cada clima local — por eso es la lectura que de verdad importa para decidir si algo amerita preocupación.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Ejemplo — por qué hacen falta las dos</strong>
+        <p>Una lluvia de 18 mm/día es, en términos absolutos, <strong>abundante</strong> en casi cualquier parte del país. Pero si esa zona está en plena estación húmeda y su promedio histórico para esa época también ronda los 18 mm/día, la anomalía va a decir <strong>normal</strong>. La primera lectura describe la magnitud; la segunda dice si hay que prestarle atención. Sin la anomalía, cada lluvia de estación húmeda dispararía una alerta que en realidad no significa nada fuera de lo común.</p>
+      </div>
+
+      <div class="example">
+        <div>
+          <div class="k">Nivel absoluto</div>
+          <div class="v">🌊 <span class="badge">Valor alto</span> — Precipitación abundante</div>
+        </div>
+        <div>
+          <div class="k">Anomalía</div>
+          <div class="v">🔵 <span class="badge">Normal</span> — dentro de la variabilidad histórica del lugar</div>
+        </div>
+      </div>
+
+      <p style="font-size:14.5px;color:var(--ink-soft);">La anomalía se calcula como <code>(valor actual − media histórica) / (máximo − mínimo histórico)</code> sobre el mismo rango de fechas, repetido en cada uno de los últimos 11 años (2015-2025), para la misma área elegida. No todas las variables tienen nivel absoluto calibrado (ej. la Tasa de Precipitación y el estado hídrico de vegetación por MODIS solo muestran anomalía) — en esos casos, la tarjeta de nivel absoluto simplemente no aparece.</p>
+    </section>
+
+    <!-- ───────────────────────── SECCIÓN 4 — VEGETACIÓN ───────────────────────── -->
+    <section class="block theme-veg" id="s4">
+      <div class="block-head"><span class="tag">04</span></div>
+      <h2>Variables de vegetación — MODIS</h2>
+      <p class="dek">Índices espectrales cada 8 días a 500 m, con máscara de nubes. Buena resolución temporal para seguir tendencia; la resolución espacial es gruesa, así que un incendio o estrés muy chico y localizado puede diluirse con lo que lo rodea.</p>
+
+      <div class="var-grid">
+        <div class="var-card">
+          <h3>NDVI — Vigor vegetal <span class="unit">adimensional · -0.1 a 0.8</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>Densidad y actividad fotosintética de la vegetación, a partir de cuánto refleja en el infrarrojo cercano frente al rojo.</dd>
+            <dt>Sirve para</dt><dd>Seguimiento de cultivos, pasturas y monte — el indicador de vigor vegetal más usado y más fácil de comparar entre lugares y fechas.</dd>
+            <dt>Cómo leerlo</dt><dd>Con agua/sin vegetación (&lt;0) · escasa (0–0.3) · intermedia (0.3–0.5) · frondosa (0.5–0.7) · muy frondosa (&gt;0.7). Sumale siempre la anomalía: un NDVI "escaso" puede ser perfectamente normal para un rastrojo en invierno.</dd>
+          </dl>
+        </div>
+        <div class="var-card">
+          <h3>IAV — Estado hídrico de la vegetación <span class="unit">adimensional · NIR/SWIR</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>Contenido de agua en el tejido vegetal — a diferencia del NDVI (que mide "cuánta" vegetación hay), este mide "qué tan hidratada" está.</dd>
+            <dt>Sirve para</dt><dd>Detectar estrés hídrico antes de que se note a simple vista o en el NDVI: una planta puede verse verde y ya estar perdiendo agua internamente.</dd>
+            <dt>Cómo leerlo</dt><dd>Solo tiene sentido donde hay vegetación real — la app no lo calcula sobre suelo desnudo o agua. Solo se evalúa por anomalía (no tiene umbral absoluto): la pregunta relevante es si está más seca o más húmeda de lo esperable para ese lugar y esa época.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <h3 style="font-size:19px;margin:28px 0 12px;">Incendios</h3>
+      <div class="var-grid">
+        <div class="var-card">
+          <h3>NBR / dNBR — Severidad de quemado <span class="unit">adimensional · NIR/SWIR2</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>El resultado que se muestra es el <strong>dNBR</strong>: la diferencia entre el NBR de la primera mitad del período elegido y el de la segunda mitad. No es un valor de un solo momento — es una comparación de "antes" contra "después" dentro de la misma ventana de fechas.</dd>
+            <dt>Sirve para</dt><dd>Detectar y dimensionar áreas quemadas: la vegetación sana refleja distinto en el SWIR que el suelo recién quemado, y esa diferencia es lo que capta el índice.</dd>
+            <dt>Cómo leerlo</dt><dd>Sin quemado/rebrote (&lt;0.10) · severidad baja (0.10–0.27) · moderada-baja (0.27–0.44) · moderada-alta (0.44–0.66) · alta (≥0.66). La app también reporta el % de superficie del área en cada clase.</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="callout ember">
+        <strong>Limitación a tener en cuenta</strong>
+        <p>Estos cortes de severidad (Key &amp; Benson / USGS) se calibraron originalmente con Landsat a 30 m. A los 500 m de MODIS, un incendio chico se mezcla con el entorno sano circundante y el dNBR puede leer más bajo de lo que leería a mayor resolución para el mismo evento — usalo como orientación de magnitud, no como medición de precisión equivalente a un relevamiento de campo.</p>
+      </div>
+      <div class="var-grid">
+        <div class="var-card">
+          <h3>Focos de calor <span class="unit">detecciones · FIRMS, MODIS/VIIRS, 1 km</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>Cantidad de detecciones de calor anómalo (posible fuego activo) dentro del área y período elegidos.</dd>
+            <dt>Sirve para</dt><dd>Complementar el dNBR con una señal independiente y casi en tiempo real de actividad de fuego.</dd>
+            <dt>Cómo leerlo</dt><dd>El número cuenta <strong>detecciones por día</strong>, no incendios: un mismo foco activo cinco días seguidos suma cinco detecciones, no una. Para saber "cuántos incendios" hubo, hay que interpretar el número junto con el mapa, no tomarlo como una cuenta de eventos.</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── SECCIÓN 5 — ALTA RESOLUCIÓN ───────────────────────── -->
+    <section class="block theme-veg" id="s5">
+      <div class="block-head"><span class="tag">05</span></div>
+      <h2>Alta resolución — Sentinel-2</h2>
+      <p class="dek">Los mismos tres índices de siempre —NDVI, IAV y un tercero, IAS— pero a 10-20 m en vez de 500 m. La contrapartida de ese detalle es el costo de cálculo: se recomienda usar esta sección sobre una parcela o un departamento chico, no una provincia completa.</p>
+
+      <div class="var-grid">
+        <div class="var-card">
+          <h3>NDVI e IAV <span class="unit">mismas etiquetas que la sección 4</span></h3>
+          <dl class="field">
+            <dt>Diferencia con MODIS</dt><dd>Misma fórmula y misma escala de interpretación — la única diferencia real es el tamaño de píxel. Usalos acá cuando la unidad de análisis es una parcela y 500 m de MODIS mezclaría demasiado terreno distinto en un solo píxel.</dd>
+          </dl>
+        </div>
+        <div class="var-card">
+          <h3>IAS — Agua superficial <span class="unit">adimensional · -27 a 0</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>Presencia de agua libre en superficie (no en el suelo ni en la planta — agua visible: charcos, anegamiento, cursos de agua chicos).</dd>
+            <dt>Sirve para</dt><dd>Mapear anegamiento a nivel de parcela, donde el detalle de Sentinel-2 permite distinguir un lote inundado del de al lado.</dd>
+            <dt>Cómo leerlo</dt><dd>Superficie seca (&lt;-27) · humedad baja (-27 a -17) · humedad moderada (-17 a -5) · alta probabilidad de agua (≥-5). Solo se calcula donde el NDVI es bajo — en vegetación densa, el índice no aplica.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>El gráfico de torta</strong>
+        <p>Para cada índice, la app suma qué porcentaje de la superficie del área cae en cada clase de la escala. Es la forma más rápida de responder "¿qué proporción de este lote está estresado / anegado / con vegetación densa?" sin tener que interpretar el mapa píxel por píxel.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── FUENTES ───────────────────────── -->
+    <section class="block" id="fuentes">
+      <div class="block-head"><span class="tag">Fuentes</span></div>
+      <h2>Fuentes de datos</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Producto</th><th>Qué aporta</th><th>Resolución</th><th>Frecuencia</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>ERA5-Land</td><td>Temperatura, humedad de suelo, lluvia, ETP, escurrimiento</td><td>~11 km</td><td>Diaria</td></tr>
+            <tr><td>MOD09A1 (MODIS)</td><td>NDVI, IAV, NBR/dNBR</td><td>500 m</td><td>Compuesto de 8 días</td></tr>
+            <tr><td>Sentinel-2 SR</td><td>NDVI, IAV, IAS de alta resolución</td><td>10–20 m</td><td>Según disponibilidad de escenas sin nube</td></tr>
+            <tr><td>FIRMS</td><td>Focos de calor / detección de incendios activos</td><td>1 km</td><td>Diaria</td></tr>
+            <tr><td>HydroATLAS</td><td>Límites de cuencas y subcuencas (nivel 6)</td><td>Vectorial</td><td>Estático</td></tr>
+            <tr><td>IGN Argentina</td><td>Límites de departamentos</td><td>Vectorial</td><td>Estático</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── BUENAS PRÁCTICAS ───────────────────────── -->
+    <section class="block" id="buenas-practicas">
+      <div class="block-head"><span class="tag">Antes de concluir algo</span></div>
+      <h2>Buenas prácticas</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Mirá siempre las dos alertas juntas</strong> (nivel absoluto + anomalía) antes de decidir que algo es preocupante — ver <a href="#alertas">cómo leer las alertas</a>.</li>
+          <li><strong>Ajustá la resolución a la escala de la pregunta.</strong> Un departamento entero: ERA5 o MODIS. Una parcela puntual: Sentinel-2, con un área chica.</li>
+          <li><strong>La anomalía histórica cubre 2015-2025</strong> (11 años) — es una referencia útil, pero no reemplaza una serie climática de largo plazo para decisiones de alto impacto.</li>
+          <li><strong>El nivel absoluto es una aproximación nacional</strong>, no calibrada por textura de suelo ni microclima local — especialmente relevante en humedad de suelo, donde un suelo arenoso y uno arcilloso se comportan muy distinto para el mismo valor numérico.</li>
+          <li><strong>Los focos de calor y el dNBR se complementan</strong>, no se reemplazan: uno detecta actividad de fuego casi en tiempo real, el otro dimensiona el área ya afectada.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>CyanoSat · Envsat — Monitoreo Hídrico Nacional</span>
+    <span>ERA5-Land · MODIS · Sentinel-2</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
