@@ -347,6 +347,10 @@
     <div class="meta">
       <span>Versión nacional · ERA5 / MODIS / Sentinel-2</span>
       <span>·</span>
+      <span>Desarrollo: Andrea Drozd</span>
+      <span>·</span>
+      <span><a href="mailto:adrozd@cyanosat.com">adrozd@cyanosat.com</a></span>
+      <span>·</span>
       <span>Actualizado agosto 2026</span>
     </div>
   </header>
@@ -446,7 +450,8 @@
       <h2>Período de análisis</h2>
       <div class="prose">
         <p>Un rango de fechas único, compartido por el resto de la app. No hay un largo "correcto": una ventana corta (días) sirve para seguir un evento puntual —una tormenta, el arranque de un incendio—; una ventana larga (meses, años) sirve para ver tendencia o comparar contra el promedio histórico del lugar.</p>
-        <p>Viene precargado con los <strong>30 días previos a hace una semana</strong> (fin = hoy − 7 días, inicio = fin − 30). Ese desfasaje de una semana es a propósito: los productos satelitales y de reanálisis tardan en publicarse, así que los últimos días suelen estar incompletos o ser preliminares.</p>
+        <p>Viene precargado con los <strong>21 días previos a hace una semana</strong> (fin = hoy − 7 días, inicio = fin − 21). Ese desfasaje de una semana es a propósito: los productos satelitales y de reanálisis tardan en publicarse, así que los últimos días suelen estar incompletos o ser preliminares. Y 21 días alcanzan para tener dos o tres compuestos de MODIS, que salen cada 8 días.</p>
+        <p>Si la sección de alta resolución (Sentinel-2) no encuentra escenas sin nubes, ampliar el rango a un mes o más suele resolverlo: ahí dependés de pasadas individuales del satélite, no de compuestos.</p>
         <p>El único caso especial es <a href="#s5">NBR — severidad de quemado</a>, que usa el período de otra manera: lo parte al medio y compara la primera mitad contra la segunda (ver esa sección).</p>
       </div>
     </section>
@@ -802,6 +807,7 @@
 
   <footer>
     <span>CyanoSat · Envsat — Monitoreo Hídrico Nacional</span>
+    <span>Desarrollo: Andrea Drozd · <a href="mailto:adrozd@cyanosat.com">adrozd@cyanosat.com</a></span>
     <span>ERA5-Land · MODIS · Sentinel-2</span>
   </footer>
 
