@@ -5,76 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Manual de uso — Monitoreo Hídrico y de Vegetación</title>
 <meta name="description" content="Guía de interpretación de las variables hídricas y de vegetación de la app nacional CyanoSat · Envsat (ERA5-Land, MODIS, Sentinel-2)." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
 <style>
+  /* Paleta tomada del sitio cyanosat.com: texto #1D1E20 sobre blanco,
+     gradiente de marca verde #0CA831 → azul #065CB3, y acentos en azul
+     profundo, teal y cian pálido. SIN modo oscuro a propósito: el manual
+     va siempre en fondo claro con texto oscuro, como el sitio. */
   :root {
-    --paper: #F4F7F6;
+    --paper: #F5F8FA;
     --paper-raised: #FFFFFF;
-    --ink: #142229;
-    --ink-soft: #4C5E63;
-    --ink-faint: #7C8B8E;
-    --water: #1B6E8C;
-    --water-soft: #E4EFF1;
-    --vegetation: #4B6B3C;
-    --vegetation-soft: #ECF1E6;
+    --ink: #1D1E20;
+    --ink-soft: #4A4E52;
+    --ink-faint: #7A8085;
+    --water: #065CB3;
+    --water-soft: #E8F1FA;
+    --vegetation: #0E7A2C;
+    --vegetation-soft: #E8F5EB;
     --ember: #A85A2A;
-    --ember-soft: #F5E9DE;
-    --line: #D2DBD8;
-    --line-strong: #AFC0BC;
-    --code-bg: #EAF0EE;
-    --shadow: 0 1px 2px rgba(20,34,41,0.06), 0 6px 20px rgba(20,34,41,0.05);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --paper: #0F1719;
-      --paper-raised: #16211F;
-      --ink: #E4EDEA;
-      --ink-soft: #AEC0BE;
-      --ink-faint: #7F918E;
-      --water: #6BC0DE;
-      --water-soft: #16333C;
-      --vegetation: #9AC084;
-      --vegetation-soft: #1D2A18;
-      --ember: #E39A62;
-      --ember-soft: #2E2115;
-      --line: #263634;
-      --line-strong: #354744;
-      --code-bg: #17211F;
-      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px rgba(0,0,0,0.35);
-    }
-  }
-  :root[data-theme="dark"] {
-    --paper: #0F1719;
-    --paper-raised: #16211F;
-    --ink: #E4EDEA;
-    --ink-soft: #AEC0BE;
-    --ink-faint: #7F918E;
-    --water: #6BC0DE;
-    --water-soft: #16333C;
-    --vegetation: #9AC084;
-    --vegetation-soft: #1D2A18;
-    --ember: #E39A62;
-    --ember-soft: #2E2115;
-    --line: #263634;
-    --line-strong: #354744;
-    --code-bg: #17211F;
-    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px rgba(0,0,0,0.35);
-  }
-  :root[data-theme="light"] {
-    --paper: #F4F7F6;
-    --paper-raised: #FFFFFF;
-    --ink: #142229;
-    --ink-soft: #4C5E63;
-    --ink-faint: #7C8B8E;
-    --water: #1B6E8C;
-    --water-soft: #E4EFF1;
-    --vegetation: #4B6B3C;
-    --vegetation-soft: #ECF1E6;
-    --ember: #A85A2A;
-    --ember-soft: #F5E9DE;
-    --line: #D2DBD8;
-    --line-strong: #AFC0BC;
-    --code-bg: #EAF0EE;
-    --shadow: 0 1px 2px rgba(20,34,41,0.06), 0 6px 20px rgba(20,34,41,0.05);
+    --ember-soft: #F7EDE4;
+    --line: #DCE4E8;
+    --line-strong: #B6C3CA;
+    --code-bg: #EDF2F5;
+    --marca-verde: #0CA831;
+    --marca-azul: #065CB3;
+    --shadow: 0 1px 2px rgba(29,30,32,0.05), 0 6px 20px rgba(29,30,32,0.05);
   }
 
   * { box-sizing: border-box; }
@@ -83,14 +39,16 @@
     margin: 0;
     background: var(--paper);
     color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    /* Mismas familias que cyanosat.com: DM Sans para el cuerpo, Roboto para
+       los títulos. Con fallbacks del sistema por si no cargan las webfonts. */
+    font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4 {
-    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
-    font-weight: 600;
+    font-family: Roboto, "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-weight: 700;
     text-wrap: balance;
     color: var(--ink);
     margin: 0;
@@ -132,6 +90,14 @@
         var(--water-soft) 68px, var(--water-soft) 69px);
     opacity: 0.6;
     pointer-events: none;
+  }
+  /* Franja superior con el gradiente de marca de cyanosat.com (verde→azul),
+     para que el manual se lea como parte del mismo sitio. */
+  .masthead::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 5px;
+    background: linear-gradient(90deg, var(--marca-verde), var(--marca-azul));
   }
   .eyebrow {
     font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
@@ -392,10 +358,13 @@
       <li><a href="#flujo"><span class="num">00</span>Cómo se usa</a></li>
       <li><a href="#s1"><span class="num">01</span>Área de interés</a></li>
       <li><a href="#s2"><span class="num">02</span>Período de análisis</a></li>
-      <li><a href="#s3"><span class="num">03</span>Variables hídricas</a></li>
+      <li><a href="#s3"><span class="num">03</span>Alertas del área</a></li>
       <li><a href="#alertas"><span class="num">—</span>Cómo leer las alertas</a></li>
-      <li><a href="#s4"><span class="num">04</span>Variables de vegetación</a></li>
-      <li><a href="#s5"><span class="num">05</span>Alta resolución (S2)</a></li>
+      <li><a href="#s4"><span class="num">04</span>Variables topográficas</a></li>
+      <li><a href="#s5"><span class="num">05</span>Variables hídricas</a></li>
+      <li><a href="#s6"><span class="num">06</span>Variables de vegetación</a></li>
+      <li><a href="#s7"><span class="num">07</span>Alta resolución (S2)</a></li>
+      <li><a href="#celular"><span class="num">—</span>Uso en celular</a></li>
       <li><a href="#fuentes"><span class="num">—</span>Fuentes de datos</a></li>
       <li><a href="#buenas-practicas"><span class="num">—</span>Buenas prácticas</a></li>
     </ol>
@@ -423,7 +392,7 @@
     <section class="block" id="flujo">
       <div class="block-head"><span class="tag">Flujo</span></div>
       <h2>Cómo se usa</h2>
-      <p class="dek">La app tiene cinco pasos numerados. Los dos primeros son transversales: el área y el período que elegís ahí se reutilizan en todas las variables de las secciones 3, 4 y 5 — no hay que volver a definirlos para cada análisis.</p>
+      <p class="dek">La app tiene siete pasos numerados. Los dos primeros son transversales: el área y el período que elegís ahí se reutilizan en todo el resto — no hay que volver a definirlos para cada análisis. El paso 3 da un panorama general; los pasos 4 a 7 son el detalle por variable, y vienen plegados: se despliegan tocando el título.</p>
       <div class="flow">
         <div class="flow-step">
           <div class="n">1</div>
@@ -435,14 +404,22 @@
         </div>
         <div class="flow-step">
           <div class="n">3</div>
-          <div><h4>Variables hídricas</h4><p>Temperatura, humedad de suelo, lluvia, escurrimiento y sus derivadas (ERA5-Land, resolución diaria).</p></div>
+          <div><h4>Alertas del área</h4><p>Panorama rápido: media y semáforo de nueve variables clave, todas juntas.</p></div>
         </div>
         <div class="flow-step">
           <div class="n">4</div>
-          <div><h4>Variables de vegetación</h4><p>NDVI, estado hídrico de la vegetación e incendios (MODIS, cada 8 días).</p></div>
+          <div><h4>Variables topográficas</h4><p>Relieve y elevación (SRTM), como contexto del terreno para leer todo lo demás.</p></div>
         </div>
         <div class="flow-step">
           <div class="n">5</div>
+          <div><h4>Variables hídricas</h4><p>Temperatura, humedad de suelo, lluvia, escurrimiento y sus derivadas (ERA5-Land, resolución diaria).</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="n">6</div>
+          <div><h4>Variables de vegetación</h4><p>NDVI, estado hídrico, productividad, agua superficial e incendios (MODIS, cada 8 días).</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="n">7</div>
           <div><h4>Alta resolución</h4><p>Los mismos índices de vegetación, a 10-20 m, para parcelas o áreas chicas (Sentinel-2).</p></div>
         </div>
       </div>
@@ -457,8 +434,9 @@
         <ul>
           <li><strong>Departamentos</strong> — la unidad administrativa (IGN). Es la opción natural si la pregunta es "¿cómo está tal departamento/partido?" o si vas a comparar el resultado con estadísticas censales, agropecuarias o administrativas que también vienen por departamento.</li>
           <li><strong>Cuencas</strong> — subcuencas hidrográficas (HydroATLAS, nivel Pfafstetter 6). Conviene cuando la pregunta es sobre agua en sí misma: escurrimiento, inundación, disponibilidad — porque el agua no respeta límites administrativos, sigue la topografía.</li>
-          <li><strong>Dibujar polígono</strong> — un área personalizada, trazada a mano sobre el mapa. Es la única opción razonable para la sección 5 (alta resolución), donde conviene acotarse a una parcela o un área chica en vez de una unidad administrativa grande.</li>
+          <li><strong>Dibujar polígono</strong> — un área personalizada, trazada a mano sobre el mapa. Es la única opción razonable para la sección 7 (alta resolución), donde conviene acotarse a una parcela o un área chica en vez de una unidad administrativa grande.</li>
         </ul>
+        <p>También hay un botón <strong>Mi ubicación</strong>, que le pide la posición al navegador y selecciona directamente el departamento o la cuenca donde estás parado.</p>
       </div>
     </section>
 
@@ -468,13 +446,60 @@
       <h2>Período de análisis</h2>
       <div class="prose">
         <p>Un rango de fechas único, compartido por el resto de la app. No hay un largo "correcto": una ventana corta (días) sirve para seguir un evento puntual —una tormenta, el arranque de un incendio—; una ventana larga (meses, años) sirve para ver tendencia o comparar contra el promedio histórico del lugar.</p>
-        <p>El único caso especial es <a href="#s4">NBR — severidad de quemado</a>, que usa el período de otra manera: lo parte al medio y compara la primera mitad contra la segunda (ver esa sección).</p>
+        <p>Viene precargado con los <strong>30 días previos a hace una semana</strong> (fin = hoy − 7 días, inicio = fin − 30). Ese desfasaje de una semana es a propósito: los productos satelitales y de reanálisis tardan en publicarse, así que los últimos días suelen estar incompletos o ser preliminares.</p>
+        <p>El único caso especial es <a href="#s5">NBR — severidad de quemado</a>, que usa el período de otra manera: lo parte al medio y compara la primera mitad contra la segunda (ver esa sección).</p>
       </div>
     </section>
 
-    <!-- ───────────────────────── SECCIÓN 3 — HÍDRICAS ───────────────────────── -->
-    <section class="block theme-water" id="s3">
+    <!-- ───────────────────────── SECCIÓN 3 — ALERTAS DEL ÁREA ───────────────────────── -->
+    <section class="block" id="s3">
       <div class="block-head"><span class="tag">03</span></div>
+      <h2>Alertas del área</h2>
+      <p class="dek">Nueve variables clave en una sola pantalla, sin tener que consultarlas de a una. Es el atajo para responder "¿hay algo raro acá?" antes de entrar al detalle.</p>
+      <div class="prose">
+        <p>El botón <strong>Estimar Alertas</strong> calcula, para el área y el período elegidos, la <strong>media</strong> de cada variable y el <strong>percentil</strong> en que cae dentro del histórico 2001-2025 de esa misma zona y esa misma época del año. Cada una aparece con un semáforo, y hay dos criterios de color según el tipo de variable:</p>
+        <ul>
+          <li><strong>Hídricas y temperatura</strong> — el color depende solo de <em>cuánto</em> se aparta de lo normal, no de hacia dónde: verde (normal), amarillo (anomalía leve), rojo (anomalía alta). Apartarse mucho merece atención tanto por defecto como por exceso. La dirección igual se aclara en el texto: <em>déficit</em> o <em>superávit</em> — y en temperatura, <em>por encima</em> o <em>por debajo</em> de lo normal, que se entiende mejor.</li>
+          <li><strong>Vegetación</strong> (NDVI, IAV, NPP) — acá el signo sí cambia el color, porque menos vegetación es un problema y más no lo es: rojo y amarillo para déficit alto y leve, verde para normal, celeste y azul para superávit leve y alto.</li>
+        </ul>
+        <p>Las nueve variables son: temperatura del aire, precipitación, agua en el suelo (7-28 cm), agua infiltrada, balance hídrico, escurrimiento superficial, NDVI, IAV y NPP.</p>
+      </div>
+      <div class="callout">
+        <strong>Por qué puede demorar</strong>
+        <p>Cada variable se compara contra once años de histórico, así que este panel es bastante más pesado que consultar una variable suelta. Si el área es grande, dale tiempo antes de volver a apretar.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── SECCIÓN 4 — TOPOGRÁFICAS ───────────────────────── -->
+    <section class="block" id="s4">
+      <div class="block-head"><span class="tag">04</span></div>
+      <h2>Variables topográficas</h2>
+      <p class="dek">Dos capas de contexto del terreno, independientes del período elegido: el relieve no cambia de una semana a otra.</p>
+      <div class="var-grid">
+        <div class="var-card">
+          <h3>Relieve (hillshade) <span class="unit">sombreado · SRTM 30 m</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>No es una variable medida: es un sombreado calculado a partir del modelo de elevación, simulando cómo caería la luz sobre el terreno.</dd>
+            <dt>Sirve para</dt><dd>Leer la forma del paisaje de un vistazo — dónde hay lomas, valles y quiebres de pendiente. Ayuda a entender por qué el agua se acumula donde se acumula.</dd>
+          </dl>
+        </div>
+        <div class="var-card">
+          <h3>Elevación (DEM) <span class="unit">metros · SRTM 30 m</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>La altura del terreno sobre el nivel del mar, en escala de color.</dd>
+            <dt>Sirve para</dt><dd>Poner en contexto los resultados de las demás secciones: un escurrimiento alto en una zona de pendiente pronunciada significa algo distinto que el mismo valor en una llanura.</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="callout">
+        <strong>El contraste se ajusta a cada zona</strong>
+        <p>Las dos capas usan los percentiles 2 y 98 del área elegida para definir su escala de color, en vez de un rango fijo. Es lo que permite que también se lean bien en terreno plano: con un rango fijo pensado para la cordillera, una llanura quedaría toda de un mismo tono.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── SECCIÓN 5 — HÍDRICAS ───────────────────────── -->
+    <section class="block theme-water" id="s5">
+      <div class="block-head"><span class="tag">05</span></div>
       <h2>Variables hídricas — ERA5-Land</h2>
       <p class="dek">Catorce variables medidas directamente por el reanálisis climático, más cinco derivadas calculadas a partir de ellas. Todas a resolución diaria, ~11 km de celda.</p>
 
@@ -593,14 +618,19 @@
           <p><strong>¿Es alto o bajo en sí mismo?</strong> Un umbral fijo por variable (ej. temperatura &gt; 35 °C = ola de calor), igual en cualquier lugar del país. Es información inmediata pero genérica: un umbral pensado para "un suelo promedio" no distingue Patagonia de Misiones.</p>
         </div>
         <div class="pill-card anom">
-          <span class="pill">Anomalía histórica</span>
-          <p><strong>¿Es raro para este lugar y este momento?</strong> Compara el valor actual contra el propio histórico 2015-2025 de esa misma zona y esa misma época del año. Se ajusta sola a cada clima local — por eso es la lectura que de verdad importa para decidir si algo amerita preocupación.</p>
+          <span class="pill">Percentil histórico</span>
+          <p><strong>¿Es raro para este lugar y este momento?</strong> Ubica el valor actual dentro del propio histórico 2001-2025 de esa misma zona y esa misma época del año. Se ajusta solo a cada clima local — por eso es la lectura que de verdad importa para decidir si algo amerita preocupación.</p>
         </div>
       </div>
 
       <div class="callout">
-        <strong>Ejemplo — por qué hacen falta las dos</strong>
-        <p>Una lluvia de 18 mm/día es, en términos absolutos, <strong>abundante</strong> en casi cualquier parte del país. Pero si esa zona está en plena estación húmeda y su promedio histórico para esa época también ronda los 18 mm/día, la anomalía va a decir <strong>normal</strong>. La primera lectura describe la magnitud; la segunda dice si hay que prestarle atención. Sin la anomalía, cada lluvia de estación húmeda dispararía una alerta que en realidad no significa nada fuera de lo común.</p>
+        <strong>Qué significa el percentil</strong>
+        <p>Es la posición del valor actual dentro de los 25 años de referencia. <strong>Percentil 14</strong> quiere decir que <strong>solo el 14 % de esos años tuvo un valor más bajo</strong>: es una situación seca, aunque no extrema. Percentil 50 es la mitad exacta de la serie. Los cortes que usa la app son los habituales en los monitores de sequía: <strong>por debajo de 10 y por encima de 90 son situaciones excepcionales</strong>, entre 30 y 70 es lo normal.</p>
+      </div>
+
+      <div class="callout">
+        <strong>Por qué percentil y no un promedio</strong>
+        <p>En variables como la lluvia, lo frecuente es el valor bajo: llueve poco muchos días y mucho unos pocos. Con esa forma de distribución, el promedio queda corrido hacia arriba por unos pocos años lluviosos, y comparar contra él subestima cuán seco está siendo el presente. El percentil no depende de la forma de la distribución — solo cuenta cuántos años quedaron por debajo — así que funciona igual de bien en precipitación que en temperatura.</p>
       </div>
 
       <div class="example">
@@ -609,19 +639,19 @@
           <div class="v">🌊 <span class="badge">Valor alto</span> — Precipitación abundante</div>
         </div>
         <div>
-          <div class="k">Anomalía</div>
-          <div class="v">🔵 <span class="badge">Normal</span> — dentro de la variabilidad histórica del lugar</div>
+          <div class="k">Percentil</div>
+          <div class="v">🟢 <span class="badge">Normal</span> — percentil 58, dentro de lo habitual del lugar</div>
         </div>
       </div>
 
-      <p style="font-size:14.5px;color:var(--ink-soft);">La anomalía se calcula como <code>(valor actual − media histórica) / (máximo − mínimo histórico)</code> sobre el mismo rango de fechas, repetido en cada uno de los últimos 11 años (2015-2025), para la misma área elegida. No todas las variables tienen nivel absoluto calibrado (ej. la Tasa de Precipitación y el estado hídrico de vegetación por MODIS solo muestran anomalía) — en esos casos, la tarjeta de nivel absoluto simplemente no aparece.</p>
+      <p style="font-size:14.5px;color:var(--ink-soft);">El percentil se calcula sobre el mismo rango de fechas repetido en cada uno de los 25 años de referencia (2001-2025), para la misma área elegida. Se usa la posición de Weibull, que nunca devuelve 0 ni 100 exactos: con 25 años no se puede afirmar "es el máximo posible", solo "es el mayor de los 25 años observados". No todas las variables tienen nivel absoluto calibrado (ej. la Tasa de Precipitación y el estado hídrico de vegetación por MODIS solo muestran percentil) — en esos casos, la tarjeta de nivel absoluto simplemente no aparece.</p>
     </section>
 
     <!-- ───────────────────────── SECCIÓN 4 — VEGETACIÓN ───────────────────────── -->
-    <section class="block theme-veg" id="s4">
-      <div class="block-head"><span class="tag">04</span></div>
+    <section class="block theme-veg" id="s6">
+      <div class="block-head"><span class="tag">06</span></div>
       <h2>Variables de vegetación — MODIS</h2>
-      <p class="dek">Índices espectrales cada 8 días a 500 m, con máscara de nubes. Buena resolución temporal para seguir tendencia; la resolución espacial es gruesa, así que un incendio o estrés muy chico y localizado puede diluirse con lo que lo rodea.</p>
+      <p class="dek">Índices espectrales cada 8 días a 500 m, con máscara de nubes: vigor, estado hídrico, productividad, agua superficial e incendios. Buena resolución temporal para seguir tendencia; la resolución espacial es gruesa, así que un incendio o estrés muy chico y localizado puede diluirse con lo que lo rodea.</p>
 
       <div class="var-grid">
         <div class="var-card">
@@ -638,6 +668,22 @@
             <dt>Mide</dt><dd>Contenido de agua en el tejido vegetal — a diferencia del NDVI (que mide "cuánta" vegetación hay), este mide "qué tan hidratada" está.</dd>
             <dt>Sirve para</dt><dd>Detectar estrés hídrico antes de que se note a simple vista o en el NDVI: una planta puede verse verde y ya estar perdiendo agua internamente.</dd>
             <dt>Cómo leerlo</dt><dd>Solo tiene sentido donde hay vegetación real — la app no lo calcula sobre suelo desnudo o agua. Solo se evalúa por anomalía (no tiene umbral absoluto): la pregunta relevante es si está más seca o más húmeda de lo esperable para ese lugar y esa época.</dd>
+          </dl>
+        </div>
+        <div class="var-card">
+          <h3>NPP — Productividad primaria neta <span class="unit">g C/m²/día</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>El carbono que la vegetación fija efectivamente, ya descontada su propia respiración de mantenimiento. Sale del producto MODIS MOD17, que se basa en la <strong>eficiencia con que la planta usa la radiación</strong> que recibe.</dd>
+            <dt>Sirve para</dt><dd>Cuantificar cuánto está <em>produciendo</em> la vegetación, no solo cuánta hay: dos lotes con el mismo NDVI pueden tener productividades muy distintas según el agua, la temperatura y la radiación disponibles.</dd>
+            <dt>Cómo leerlo</dt><dd>La capa que se muestra por defecto es la <strong>anomalía</strong>, no el valor crudo. Es a propósito: el mapa de NPP se parece bastante al de NDVI —los dos marcan dónde hay más vegetación—, mientras que la anomalía muestra dónde la productividad está fuera de lo normal para la época, que es lo que no dice ninguna otra capa. El valor crudo queda igual disponible, destildado.</dd>
+          </dl>
+        </div>
+        <div class="var-card">
+          <h3>IAS — Agua superficial <span class="unit">adimensional · -27 a 0</span></h3>
+          <dl class="field">
+            <dt>Mide</dt><dd>Agua libre en superficie: la misma fórmula que el IAS de la sección 6, pero con las bandas equivalentes de MODIS.</dd>
+            <dt>Sirve para</dt><dd>Ver anegamiento sobre áreas grandes, donde calcular Sentinel-2 sería demasiado costoso.</dd>
+            <dt>Cómo leerlo</dt><dd>Misma escala que en alta resolución, con dos salvedades: a 500 m solo se distinguen cuerpos de agua extensos, y los coeficientes de la fórmula fueron calibrados para Sentinel-2 — acá se reutilizan por similitud espectral entre bandas, sin una recalibración propia para MODIS. Tomalo como orientación, no como una medición equivalente.</dd>
           </dl>
         </div>
       </div>
@@ -670,16 +716,17 @@
     </section>
 
     <!-- ───────────────────────── SECCIÓN 5 — ALTA RESOLUCIÓN ───────────────────────── -->
-    <section class="block theme-veg" id="s5">
-      <div class="block-head"><span class="tag">05</span></div>
+    <section class="block theme-veg" id="s7">
+      <div class="block-head"><span class="tag">07</span></div>
       <h2>Alta resolución — Sentinel-2</h2>
-      <p class="dek">Los mismos tres índices de siempre —NDVI, IAV y un tercero, IAS— pero a 10-20 m en vez de 500 m. La contrapartida de ese detalle es el costo de cálculo: se recomienda usar esta sección sobre una parcela o un departamento chico, no una provincia completa.</p>
+      <p class="dek">Los mismos índices —NDVI, IAV e IAS— pero a 10-20 m en vez de 500 m. La contrapartida de ese detalle es el costo de cálculo: se recomienda usar esta sección sobre una parcela o un departamento chico, no una provincia completa.</p>
 
       <div class="var-grid">
         <div class="var-card">
-          <h3>NDVI e IAV <span class="unit">mismas etiquetas que la sección 4</span></h3>
+          <h3>NDVI e IAV <span class="unit">mismas etiquetas que la sección 5</span></h3>
           <dl class="field">
             <dt>Diferencia con MODIS</dt><dd>Misma fórmula y misma escala de interpretación — la única diferencia real es el tamaño de píxel. Usalos acá cuando la unidad de análisis es una parcela y 500 m de MODIS mezclaría demasiado terreno distinto en un solo píxel.</dd>
+            <dt>Dónde se calculan</dt><dd>El IAV solo sobre vegetación densa (NDVI ≥ 0.6) y el IAS solo donde el NDVI es bajo (&lt; 0.6): son mutuamente excluyentes, así que cada píxel entra en uno o en otro, nunca en los dos. Ambos excluyen además las zonas urbanas.</dd>
           </dl>
         </div>
         <div class="var-card">
@@ -698,6 +745,21 @@
       </div>
     </section>
 
+    <!-- ───────────────────────── CELULAR ───────────────────────── -->
+    <section class="block" id="celular">
+      <div class="block-head"><span class="tag">Celular</span></div>
+      <h2>Uso en celular</h2>
+      <p class="dek">Hay una versión aparte de la app pensada para pantallas de teléfono. Tiene las mismas seis secciones y los mismos cálculos: lo que cambia es cómo se acomoda en pantalla.</p>
+      <div class="prose">
+        <ul>
+          <li><strong>Panel y mapa no se ven a la vez.</strong> En una pantalla chica no entran los dos, así que se alternan: el panel ocupa todo el ancho, y se pasa al mapa con el botón <strong>Ver mapa</strong> que está en la barra de título de las secciones 3 a 7. Para volver, el botón flotante <strong>Ver panel</strong> abajo a la derecha del mapa.</li>
+          <li><strong>Tocar el mapa cierra el panel.</strong> Es el atajo para mirar una capa: tocás cualquier parte del mapa y el panel se va solo.</li>
+          <li><strong>Una capa por vez.</strong> No está el listado de capas de Earth Engine: cada consulta nueva reemplaza a la anterior en el mapa, para no acumular capas viejas en una pantalla donde no hay lugar para administrarlas. La excepción son los índices de Sentinel-2, que sí pueden superponerse, y las capas de relieve y elevación, que son independientes.</li>
+        </ul>
+        <p>Todo lo demás de este manual —qué significa cada variable, cómo leer las alertas, los umbrales— vale igual para las dos versiones.</p>
+      </div>
+    </section>
+
     <!-- ───────────────────────── FUENTES ───────────────────────── -->
     <section class="block" id="fuentes">
       <div class="block-head"><span class="tag">Fuentes</span></div>
@@ -709,9 +771,11 @@
           </thead>
           <tbody>
             <tr><td>ERA5-Land</td><td>Temperatura, humedad de suelo, lluvia, ETP, escurrimiento</td><td>~11 km</td><td>Diaria</td></tr>
-            <tr><td>MOD09A1 (MODIS)</td><td>NDVI, IAV, NBR/dNBR</td><td>500 m</td><td>Compuesto de 8 días</td></tr>
+            <tr><td>MOD09A1 (MODIS)</td><td>NDVI, IAV, IAS, NBR/dNBR</td><td>500 m</td><td>Compuesto de 8 días</td></tr>
+            <tr><td>MOD17A2H / A2HGF (MODIS)</td><td>NPP — productividad primaria neta</td><td>500 m</td><td>Compuesto de 8 días</td></tr>
             <tr><td>Sentinel-2 SR</td><td>NDVI, IAV, IAS de alta resolución</td><td>10–20 m</td><td>Según disponibilidad de escenas sin nube</td></tr>
             <tr><td>FIRMS</td><td>Focos de calor / detección de incendios activos</td><td>1 km</td><td>Diaria</td></tr>
+            <tr><td>SRTM</td><td>Relieve (hillshade) y elevación</td><td>30 m</td><td>Estático</td></tr>
             <tr><td>HydroATLAS</td><td>Límites de cuencas y subcuencas (nivel 6)</td><td>Vectorial</td><td>Estático</td></tr>
             <tr><td>IGN Argentina</td><td>Límites de departamentos</td><td>Vectorial</td><td>Estático</td></tr>
           </tbody>
@@ -727,7 +791,7 @@
         <ul>
           <li><strong>Mirá siempre las dos alertas juntas</strong> (nivel absoluto + anomalía) antes de decidir que algo es preocupante — ver <a href="#alertas">cómo leer las alertas</a>.</li>
           <li><strong>Ajustá la resolución a la escala de la pregunta.</strong> Un departamento entero: ERA5 o MODIS. Una parcela puntual: Sentinel-2, con un área chica.</li>
-          <li><strong>La anomalía histórica cubre 2015-2025</strong> (11 años) — es una referencia útil, pero no reemplaza una serie climática de largo plazo para decisiones de alto impacto.</li>
+          <li><strong>El histórico de referencia cubre 2001-2025</strong> (25 años) — es una referencia sólida, pero no reemplaza una serie climática de largo plazo para decisiones de alto impacto. Tené presente además que con 25 años el percentil tiene una resolución de unos 4 puntos: la diferencia entre percentil 12 y 15 no es significativa.</li>
           <li><strong>El nivel absoluto es una aproximación nacional</strong>, no calibrada por textura de suelo ni microclima local — especialmente relevante en humedad de suelo, donde un suelo arenoso y uno arcilloso se comportan muy distinto para el mismo valor numérico.</li>
           <li><strong>Los focos de calor y el dNBR se complementan</strong>, no se reemplazan: uno detecta actividad de fuego casi en tiempo real, el otro dimensiona el área ya afectada.</li>
         </ul>
