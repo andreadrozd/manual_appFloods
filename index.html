@@ -351,6 +351,8 @@
       <span>·</span>
       <span><a href="mailto:adrozd@cyanosat.com">adrozd@cyanosat.com</a></span>
       <span>·</span>
+      <span><a href="https://wa.me/5491138598357">💬 WhatsApp</a></span>
+      <span>·</span>
       <span>Actualizado agosto 2026</span>
     </div>
   </header>
@@ -364,9 +366,9 @@
       <li><a href="#s2"><span class="num">02</span>Período de análisis</a></li>
       <li><a href="#s3"><span class="num">03</span>Alertas del área</a></li>
       <li><a href="#alertas"><span class="num">—</span>Cómo leer las alertas</a></li>
-      <li><a href="#s4"><span class="num">04</span>Variables topográficas</a></li>
-      <li><a href="#s5"><span class="num">05</span>Variables hídricas</a></li>
-      <li><a href="#s6"><span class="num">06</span>Variables de vegetación</a></li>
+      <li><a href="#s4"><span class="num">04</span>Topografía</a></li>
+      <li><a href="#s5"><span class="num">05</span>Hidro-Clima</a></li>
+      <li><a href="#s6"><span class="num">06</span>Vegetación</a></li>
       <li><a href="#s7"><span class="num">07</span>Alta resolución (S2)</a></li>
       <li><a href="#celular"><span class="num">—</span>Uso en celular</a></li>
       <li><a href="#fuentes"><span class="num">—</span>Fuentes de datos</a></li>
@@ -412,15 +414,15 @@
         </div>
         <div class="flow-step">
           <div class="n">4</div>
-          <div><h4>Variables topográficas</h4><p>Relieve y elevación (SRTM), como contexto del terreno para leer todo lo demás.</p></div>
+          <div><h4>Topografía</h4><p>Relieve y elevación (SRTM), como contexto del terreno para leer todo lo demás.</p></div>
         </div>
         <div class="flow-step">
           <div class="n">5</div>
-          <div><h4>Variables hídricas</h4><p>Temperatura, humedad de suelo, lluvia, escurrimiento y sus derivadas (ERA5-Land, resolución diaria).</p></div>
+          <div><h4>Hidro-Clima</h4><p>Temperatura, humedad de suelo, lluvia, escurrimiento y sus derivadas (ERA5-Land, resolución diaria).</p></div>
         </div>
         <div class="flow-step">
           <div class="n">6</div>
-          <div><h4>Variables de vegetación</h4><p>NDVI, estado hídrico, productividad, agua superficial e incendios (MODIS, cada 8 días).</p></div>
+          <div><h4>Vegetación</h4><p>NDVI, estado hídrico, productividad, agua superficial e incendios (MODIS, cada 8 días).</p></div>
         </div>
         <div class="flow-step">
           <div class="n">7</div>
@@ -450,7 +452,7 @@
       <h2>Período de análisis</h2>
       <div class="prose">
         <p>Un rango de fechas único, compartido por el resto de la app. No hay un largo "correcto": una ventana corta (días) sirve para seguir un evento puntual —una tormenta, el arranque de un incendio—; una ventana larga (meses, años) sirve para ver tendencia o comparar contra el promedio histórico del lugar.</p>
-        <p>Viene precargado con los <strong>21 días previos a hace una semana</strong> (fin = hoy − 7 días, inicio = fin − 21). Ese desfasaje de una semana es a propósito: los productos satelitales y de reanálisis tardan en publicarse, así que los últimos días suelen estar incompletos o ser preliminares. Y 21 días alcanzan para tener dos o tres compuestos de MODIS, que salen cada 8 días.</p>
+        <p>Viene precargado con los <strong>31 días previos a hace una semana</strong> (fin = hoy − 7 días, inicio = fin − 31). Ese desfasaje de una semana es a propósito: los productos satelitales y de reanálisis tardan en publicarse, así que los últimos días suelen estar incompletos o ser preliminares. Y un mes de ventana deja margen de sobra para que haya compuestos de MODIS sin nubes, que salen cada 8 días, y alguna pasada útil de Sentinel-2.</p>
         <p>Si la sección de alta resolución (Sentinel-2) no encuentra escenas sin nubes, ampliar el rango a un mes o más suele resolverlo: ahí dependés de pasadas individuales del satélite, no de compuestos.</p>
         <p>El único caso especial es <a href="#s5">NBR — severidad de quemado</a>, que usa el período de otra manera: lo parte al medio y compara la primera mitad contra la segunda (ver esa sección).</p>
       </div>
@@ -478,7 +480,7 @@
     <!-- ───────────────────────── SECCIÓN 4 — TOPOGRÁFICAS ───────────────────────── -->
     <section class="block" id="s4">
       <div class="block-head"><span class="tag">04</span></div>
-      <h2>Variables topográficas</h2>
+      <h2>Topografía</h2>
       <p class="dek">Dos capas de contexto del terreno, independientes del período elegido: el relieve no cambia de una semana a otra.</p>
       <div class="var-grid">
         <div class="var-card">
@@ -505,7 +507,7 @@
     <!-- ───────────────────────── SECCIÓN 5 — HÍDRICAS ───────────────────────── -->
     <section class="block theme-water" id="s5">
       <div class="block-head"><span class="tag">05</span></div>
-      <h2>Variables hídricas — ERA5-Land</h2>
+      <h2>Hidro-Clima — ERA5-Land</h2>
       <p class="dek">Catorce variables medidas directamente por el reanálisis climático, más cinco derivadas calculadas a partir de ellas. Todas a resolución diaria, ~11 km de celda.</p>
 
       <h3 style="font-size:19px;margin-bottom:12px;">Temperatura</h3>
@@ -655,7 +657,7 @@
     <!-- ───────────────────────── SECCIÓN 4 — VEGETACIÓN ───────────────────────── -->
     <section class="block theme-veg" id="s6">
       <div class="block-head"><span class="tag">06</span></div>
-      <h2>Variables de vegetación — MODIS</h2>
+      <h2>Vegetación — MODIS</h2>
       <p class="dek">Índices espectrales cada 8 días a 500 m, con máscara de nubes: vigor, estado hídrico, productividad, agua superficial e incendios. Buena resolución temporal para seguir tendencia; la resolución espacial es gruesa, así que un incendio o estrés muy chico y localizado puede diluirse con lo que lo rodea.</p>
 
       <div class="var-grid">
@@ -807,7 +809,7 @@
 
   <footer>
     <span>CyanoSat · Envsat — Monitoreo Hídrico Nacional</span>
-    <span>Desarrollo: Andrea Drozd · <a href="mailto:adrozd@cyanosat.com">adrozd@cyanosat.com</a></span>
+    <span>Desarrollo: Andrea Drozd · <a href="mailto:adrozd@cyanosat.com">adrozd@cyanosat.com</a> · <a href="https://wa.me/5491138598357">💬 WhatsApp</a></span>
     <span>ERA5-Land · MODIS · Sentinel-2</span>
   </footer>
 
