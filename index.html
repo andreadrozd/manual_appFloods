@@ -410,7 +410,7 @@
         </div>
         <div class="flow-step">
           <div class="n">3</div>
-          <div><h4>Alertas del área</h4><p>Panorama rápido: media y semáforo de diez variables clave, todas juntas.</p></div>
+          <div><h4>Alertas del área</h4><p>Panorama rápido: media y semáforo de once variables clave, todas juntas.</p></div>
         </div>
         <div class="flow-step">
           <div class="n">4</div>
@@ -469,7 +469,7 @@
           <li><strong>Hídricas y temperatura</strong> — el color depende solo de <em>cuánto</em> se aparta de lo normal, no de hacia dónde: verde (normal), amarillo (anomalía leve), rojo (anomalía alta). Apartarse mucho merece atención tanto por defecto como por exceso. La dirección igual se aclara en el texto: <em>déficit</em> o <em>superávit</em> — y en temperatura, <em>por encima</em> o <em>por debajo</em> de lo normal, que se entiende mejor.</li>
           <li><strong>Vegetación</strong> (NDVI, IAV, NPP) — acá el signo sí cambia el color, porque menos vegetación es un problema y más no lo es: rojo y amarillo para déficit alto y leve, verde para normal, celeste y azul para superávit leve y alto.</li>
         </ul>
-        <p>Las diez variables son: temperatura del aire, precipitación, agua en el suelo (7-28 cm), <strong>agua profunda (100-289 cm)</strong>, agua infiltrada, balance hídrico, escurrimiento superficial, NDVI, IAV y NPP.</p>
+        <p>Las once variables son: temperatura del aire, precipitación, <strong>intensidad de lluvia</strong>, agua en el suelo (7-28 cm), <strong>agua profunda (100-289 cm)</strong>, agua infiltrada, balance hídrico, escurrimiento superficial, NDVI, IAV y NPP.</p>
         <p>Las dos profundidades de agua en el suelo se leen juntas y dicen cosas distintas: la capa superficial responde rápido a la última lluvia, mientras que la <strong>reserva profunda cambia lento y muestra la condición de fondo</strong>. Una capa superficial húmeda sobre una reserva profunda en percentil bajo indica que la recarga fue reciente y superficial — el perfil sigue sin reponerse. Al revés, una reserva profunda saturada es la que convierte una lluvia normal en anegamiento, porque el agua ya no tiene a dónde ir.</p>
       </div>
       <div class="callout">
@@ -653,6 +653,22 @@
       </div>
 
       <p style="font-size:14.5px;color:var(--ink-soft);">El percentil se calcula sobre el mismo rango de fechas repetido en cada uno de los 25 años de referencia (2001-2025), para la misma área elegida. Se usa la posición de Weibull, que nunca devuelve 0 ni 100 exactos: con 25 años no se puede afirmar "es el máximo posible", solo "es el mayor de los 25 años observados". No todas las variables tienen nivel absoluto calibrado (ej. la Tasa de Precipitación y el estado hídrico de vegetación por MODIS solo muestran percentil) — en esos casos, la tarjeta de nivel absoluto simplemente no aparece.</p>
+
+      <h3 style="font-size:20px;margin:34px 0 0;">La lectura integrada</h3>
+      <div class="prose">
+        <p>Encima del listado de variables, el panel de alertas muestra una <strong>lectura integrada</strong>: un texto que interpreta las once variables en conjunto en vez de una por una. Está ahí porque las combinaciones dicen cosas que ninguna tarjeta aislada puede decir.</p>
+
+        <p>Funciona en <strong>dos niveles</strong>. Las variables <strong>hídricas</strong> establecen la condición —anegamiento o sequía— por votación: cuántas de las cinco principales apuntan en la misma dirección. Que coincidan varias variables independientes es mucho más sólido que un valor extremo aislado. Después, las variables de <strong>vegetación</strong> confirman si esa condición tiene impacto biológico, y ahí el texto cambia de tono: una cosa es "hay condiciones de sequía" y otra distinta es "la sequía se refleja en la productividad". La <strong>reserva profunda</strong> gradúa la severidad: mientras el fondo del perfil esté normal el proceso es superficial y reversible; cuando el fondo se da vuelta, es estructural.</p>
+
+        <p>También detecta combinaciones que se prestan a malinterpretación. Por ejemplo, <strong>verdor alto con productividad baja</strong> indica que la función se deterioró antes que la estructura, algo que un índice de verdor solo no muestra. Y al revés, <strong>verdor bajo con productividad sostenida</strong> muchas veces no es daño: si la cobertura es densa, el descenso apunta a un cambio real de biomasa que la intercepción de luz amortigua; si es rala, puede ser agua libre en superficie deprimiendo el índice por una razón óptica.</p>
+      </div>
+
+      <div class="callout">
+        <strong>Lo que la lectura integrada no puede decirte</strong>
+        <p><strong>No sabe si la situación mejora o empeora.</strong> Compara un promedio del período contra el histórico: es una foto, no una película. No conoce el valor del mes anterior ni de dónde viene el dato. Por eso los textos describen el estado ("la reserva profunda se encuentra baja") y nunca su historia ("sigue baja"). Para la trayectoria hay que mirar los gráficos de evolución de cada variable.</p>
+        <p><strong>No sabe por qué pasó lo que pasó.</strong> El satélite ve la superficie, no la causa. En paisajes agrícolas, las decisiones de manejo mueven la vegetación tanto o más que el clima: superficie no sembrada por razones económicas, cultivos no atendidos, cambios de cultivo, desmonte, o abandono que deja avanzar la vegetación secundaria. Cuando la vegetación está fuera de rango y las variables hídricas no lo acompañan, el texto nombra explícitamente esas causas en vez de forzar una explicación climática.</p>
+        <p><strong>Son heurísticas, no diagnósticos.</strong> Por eso los textos dicen "compatible con" o "sugiere". Un texto que asegura algo falso cuesta más credibilidad de la que aporta uno que insinúa: tomalos como hipótesis para verificar, contrastándolas con el detalle por variable, con el mapa y con lo que sepas del territorio.</p>
+      </div>
     </section>
 
     <!-- ───────────────────────── SECCIÓN 4 — VEGETACIÓN ───────────────────────── -->
