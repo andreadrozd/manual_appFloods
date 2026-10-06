@@ -410,7 +410,7 @@
         </div>
         <div class="flow-step">
           <div class="n">3</div>
-          <div><h4>Alertas del área</h4><p>Panorama rápido: media y semáforo de once variables clave, todas juntas.</p></div>
+          <div><h4>Alertas del área</h4><p>Panorama rápido: media y semáforo de doce variables clave, todas juntas.</p></div>
         </div>
         <div class="flow-step">
           <div class="n">4</div>
@@ -469,12 +469,12 @@
           <li><strong>Hídricas y temperatura</strong> — el color depende solo de <em>cuánto</em> se aparta de lo normal, no de hacia dónde: verde (normal), amarillo (anomalía leve), rojo (anomalía alta). Apartarse mucho merece atención tanto por defecto como por exceso. La dirección igual se aclara en el texto: <em>déficit</em> o <em>superávit</em> — y en temperatura, <em>por encima</em> o <em>por debajo</em> de lo normal, que se entiende mejor.</li>
           <li><strong>Vegetación</strong> (NDVI, IAV, NPP) — acá el signo sí cambia el color, porque menos vegetación es un problema y más no lo es: rojo y amarillo para déficit alto y leve, verde para normal, celeste y azul para superávit leve y alto.</li>
         </ul>
-        <p>Las once variables son: temperatura del aire, precipitación, <strong>intensidad de lluvia</strong>, agua en el suelo (7-28 cm), <strong>agua profunda (100-289 cm)</strong>, agua infiltrada, balance hídrico, escurrimiento superficial, NDVI, IAV y NPP.</p>
-        <p>Las dos profundidades de agua en el suelo se leen juntas y dicen cosas distintas: la capa superficial responde rápido a la última lluvia, mientras que la <strong>reserva profunda cambia lento y muestra la condición de fondo</strong>. Una capa superficial húmeda sobre una reserva profunda en percentil bajo indica que la recarga fue reciente y superficial — el perfil sigue sin reponerse. Al revés, una reserva profunda saturada es la que convierte una lluvia normal en anegamiento, porque el agua ya no tiene a dónde ir.</p>
+        <p>Las doce variables son: temperatura del aire, precipitación, <strong>intensidad de lluvia</strong>, agua en el suelo (7-28 cm), <strong>agua profunda (100-289 cm)</strong>, agua infiltrada, balance hídrico, escurrimiento superficial, <strong>fracción de la lluvia que escurre</strong>, NDVI, IAV y NPP.</p>
+        <p>Las dos profundidades de agua en el suelo se leen juntas y dicen cosas distintas: la capa superficial responde rápido a la última lluvia, mientras que la <strong>reserva profunda cambia lento y muestra la condición de fondo</strong>. Una capa superficial húmeda sobre una reserva profunda en percentil bajo es compatible con aportes de agua que mojaron la superficie sin alcanzar a reponer el perfil de fondo. Al revés, una reserva profunda saturada es la que convierte una lluvia normal en anegamiento, porque el agua ya no tiene a dónde ir.</p>
       </div>
       <div class="callout">
         <strong>Por qué puede demorar</strong>
-        <p>Cada variable se compara contra once años de histórico, así que este panel es bastante más pesado que consultar una variable suelta. Si el área es grande, dale tiempo antes de volver a apretar.</p>
+        <p>Cada variable se compara contra 25 años de histórico (2001-2025), así que este panel es bastante más pesado que consultar una variable suelta. Si el área es grande, dale tiempo antes de volver a apretar.</p>
       </div>
     </section>
 
@@ -656,13 +656,23 @@
 
       <h3 style="font-size:20px;margin:34px 0 0;">La lectura integrada</h3>
       <div class="prose">
-        <p>Encima del listado de variables, el panel de alertas muestra una <strong>lectura integrada</strong>: un texto que interpreta las once variables en conjunto en vez de una por una. Está ahí porque las combinaciones dicen cosas que ninguna tarjeta aislada puede decir.</p>
+        <p>Encima del listado de variables, el panel de alertas muestra una <strong>lectura integrada</strong>: un texto que interpreta las doce variables en conjunto en vez de una por una. Está ahí porque las combinaciones dicen cosas que ninguna tarjeta aislada puede decir.</p>
 
         <p>Funciona en <strong>dos niveles</strong>. Las variables <strong>hídricas</strong> establecen la condición —anegamiento o sequía— por votación: cuántas de las cinco principales apuntan en la misma dirección. Que coincidan varias variables independientes es mucho más sólido que un valor extremo aislado. Después, las variables de <strong>vegetación</strong> confirman si esa condición tiene impacto biológico, y ahí el texto cambia de tono: una cosa es "hay condiciones de sequía" y otra distinta es "la sequía se refleja en la productividad". La <strong>reserva profunda</strong> gradúa la severidad: mientras el fondo del perfil esté normal el proceso es superficial y reversible; cuando el fondo se da vuelta, es estructural.</p>
 
         <p><strong>"Condiciones de" o "tendencia a".</strong> La lectura distingue dos grados. Se habla de <strong>condiciones de</strong> anegamiento o de sequía (🔴) solo cuando coinciden varias variables en valores <em>extremos</em>: percentil por encima de 90 o por debajo de 10. Cuando las variables se apartan de lo normal pero sin llegar a esos extremos (por encima de 70 o por debajo de 30), se habla de <strong>tendencia a</strong> (🟡). La distinción importa porque con esos cortes moderados, por puro azar, cerca del 40 % de los casos queda fuera de lo normal: afirmar una condición con eso sería decir más de lo que los datos sostienen.</p>
 
         <p><strong>Exceso de agua sin lluvia elevada.</strong> Si el perfil muestra mucha agua pero la precipitación del período no es elevada, la lectura no la atribuye a la lluvia local. Plantea las dos explicaciones posibles: que sea un remanente de lluvias anteriores que tiende a resolverse por escurrimiento, drenaje y evaporación si no hay nuevos aportes, o que no dependa de la lluvia local —aportes desde otras zonas, napa elevada o drenaje deficiente— y entonces pueda mantenerse. El panel no puede distinguir entre las dos.</p>
+
+        <p><strong>Temperatura: calor o frío para la época.</strong> Los hallazgos de anegamiento y sequía incluyen una frase sobre la temperatura. Compara la temperatura media del período con el mismo rango de fechas de los 25 años de referencia, así que "caluroso" o "frío" es relativo a la estación y no a un umbral fijo. Si está por encima del percentil 70 o por debajo del 30, habla de <strong>tendencia a calor</strong> o <strong>tendencia a frío</strong> para la época, y explica cómo interactúa con el estado hídrico: el calor agrava un déficit y favorece que un exceso de agua se retire, mientras que el frío hace lo contrario porque reduce la demanda evaporativa.</p>
+
+        <p>Cuando la anomalía es <strong>severa</strong> (por encima del percentil 90 o por debajo del 10) agrega que puede afectar la <strong>productividad de la vegetación</strong>: con calor extremo la respiración aumenta y la fotosíntesis se aplana; un frío severo frena la fotosíntesis y el crecimiento aunque el agua no sea limitante. Esa lectura se contrasta con la productividad observada, aclarando que la vegetación responde con rezago, así que no verla afectada en el período no descarta un efecto posterior. Si hay una anomalía térmica severa sin síndrome hídrico, aparece como hallazgo propio.</p>
+
+        <p>Es un promedio del período: describe un régimen, no permite identificar heladas ni olas de calor puntuales, que son extremos de un solo día.</p>
+
+        <p><strong>Qué parte de la lluvia no se absorbe.</strong> Es la fracción de escurrimiento: el escurrimiento dividido por la lluvia, sobre todo el período. Separa dos cosas que el escurrimiento solo confunde: "escurre mucho porque llovió mucho" y "escurre mucho porque el suelo no está absorbiendo". Lo que se informa es lo que el modelo estima —que el suelo absorbe menos o más de lo habitual—, no su estado físico: el modelo no mide si el suelo está compactado. Si en el período casi no llovió, el cociente no significa nada y la app lo indica ("sin lluvia suficiente para evaluarla"). Combinada con la reserva, cambia la lectura: con la reserva alta apunta a saturación, el suelo está lleno y lo que cae no entra; con la reserva baja y lluvia concentrada apunta a que el agua llega más rápido de lo que el suelo la absorbe.</p>
+
+        <p><strong>Agua que no se absorbe y que la atmósfera no retira.</strong> Cuando una parte mayor de lo habitual de la lluvia no se absorbe, se mira además el signo del balance (lluvia menos demanda atmosférica). Si es positivo, no hay demanda atmosférica que retire ese exceso; en invierno, con la demanda baja, un balance positivo es lo normal, y es una de las razones por las que el agua puede permanecer meses. Si es negativo, la atmósfera tiene capacidad de retirarla. Es un <strong>indicio y no una observación</strong>: el modelo trata el escurrimiento como agua que sale, y en terreno llano esa agua en realidad queda en superficie sin que el modelo pueda verlo. Confirmar un encharcamiento requiere observar agua libre desde el satélite, y la pendiente del terreno decide cuánto persiste.</p>
 
         <p><strong>Disponibilidad de vegetación.</strong> Los productos de vegetación se publican con más demora que los climáticos, así que las últimas semanas del período pueden no tener datos. Debajo del área el resultado indica cuántos compuestos de NDVI y de NPP entraron y la fecha del último, para que un "sin datos de vegetación" no se lea como "sin impacto". Además, la vegetación responde a las condiciones hídricas con un rezago de días a semanas.</p>
 
