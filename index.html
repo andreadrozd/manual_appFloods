@@ -364,12 +364,13 @@
       <li><a href="#flujo"><span class="num">00</span>Cómo se usa</a></li>
       <li><a href="#s1"><span class="num">01</span>Área de interés</a></li>
       <li><a href="#s2"><span class="num">02</span>Período de análisis</a></li>
-      <li><a href="#s3"><span class="num">03</span>Alertas del área</a></li>
+      <li><a href="#eventos"><span class="num">03</span>Eventos recientes</a></li>
+      <li><a href="#s3"><span class="num">04</span>Alertas del área</a></li>
       <li><a href="#alertas"><span class="num">—</span>Cómo leer las alertas</a></li>
-      <li><a href="#s4"><span class="num">04</span>Topografía</a></li>
-      <li><a href="#s5"><span class="num">05</span>Hidro-Clima</a></li>
-      <li><a href="#s6"><span class="num">06</span>Vegetación</a></li>
-      <li><a href="#s7"><span class="num">07</span>Alta resolución (S2)</a></li>
+      <li><a href="#s4"><span class="num">05</span>Topografía</a></li>
+      <li><a href="#s5"><span class="num">06</span>Hidro-Clima</a></li>
+      <li><a href="#s6"><span class="num">07</span>Vegetación</a></li>
+      <li><a href="#s7"><span class="num">08</span>Alta resolución (S2)</a></li>
       <li><a href="#celular"><span class="num">—</span>Uso en celular</a></li>
       <li><a href="#fuentes"><span class="num">—</span>Fuentes de datos</a></li>
       <li><a href="#buenas-practicas"><span class="num">—</span>Buenas prácticas</a></li>
@@ -398,7 +399,7 @@
     <section class="block" id="flujo">
       <div class="block-head"><span class="tag">Flujo</span></div>
       <h2>Cómo se usa</h2>
-      <p class="dek">La app tiene siete pasos numerados. Los dos primeros son transversales: el área y el período que elegís ahí se reutilizan en todo el resto — no hay que volver a definirlos para cada análisis. El paso 3 da un panorama general; los pasos 4 a 7 son el detalle por variable, y vienen plegados: se despliegan tocando el título.</p>
+      <p class="dek">La app tiene ocho pasos numerados. Los dos primeros son transversales: el área y el período que elegís ahí se reutilizan en todo el resto — no hay que volver a definirlos para cada análisis. Los pasos 3 y 4 dan un panorama general (qué pasó en los últimos días y cómo está el período elegido); los pasos 5 a 8 son el detalle por variable. Todos los pasos desde el 3 vienen plegados: se despliegan tocando el título.</p>
       <div class="flow">
         <div class="flow-step">
           <div class="n">1</div>
@@ -410,22 +411,26 @@
         </div>
         <div class="flow-step">
           <div class="n">3</div>
-          <div><h4>Alertas del área</h4><p>Panorama rápido: media y semáforo de doce variables clave, todas juntas.</p></div>
+          <div><h4>Eventos recientes</h4><p>Lluvia y temperatura de los últimos días, hasta el último dato disponible: para ver a tiempo olas de calor, frío o helada y lluvias fuera de lo común.</p></div>
         </div>
         <div class="flow-step">
           <div class="n">4</div>
-          <div><h4>Topografía</h4><p>Relieve y elevación (SRTM), como contexto del terreno para leer todo lo demás.</p></div>
+          <div><h4>Alertas del área</h4><p>Panorama rápido: media y semáforo de doce variables clave, todas juntas.</p></div>
         </div>
         <div class="flow-step">
           <div class="n">5</div>
-          <div><h4>Hidro-Clima</h4><p>Temperatura, humedad de suelo, lluvia, escurrimiento y sus derivadas (ERA5-Land, resolución diaria).</p></div>
+          <div><h4>Topografía</h4><p>Relieve y elevación (SRTM), como contexto del terreno para leer todo lo demás.</p></div>
         </div>
         <div class="flow-step">
           <div class="n">6</div>
-          <div><h4>Vegetación</h4><p>NDVI, estado hídrico, productividad, agua superficial e incendios (MODIS, cada 8 días).</p></div>
+          <div><h4>Hidro-Clima</h4><p>Temperatura, humedad de suelo, lluvia, escurrimiento y sus derivadas (ERA5-Land, resolución diaria).</p></div>
         </div>
         <div class="flow-step">
           <div class="n">7</div>
+          <div><h4>Vegetación</h4><p>NDVI, estado hídrico, productividad, agua superficial e incendios (MODIS, cada 8 días).</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="n">8</div>
           <div><h4>Alta resolución</h4><p>Los mismos índices de vegetación, a 10-20 m, para parcelas o áreas chicas (Sentinel-2).</p></div>
         </div>
       </div>
@@ -458,9 +463,29 @@
       </div>
     </section>
 
-    <!-- ───────────────────────── SECCIÓN 3 — ALERTAS DEL ÁREA ───────────────────────── -->
-    <section class="block" id="s3">
+    <!-- ───────────────────────── SECCIÓN 3 — EVENTOS RECIENTES ───────────────────────── -->
+    <section class="block" id="eventos">
       <div class="block-head"><span class="tag">03</span></div>
+      <h2>Eventos recientes</h2>
+      <p class="dek">Qué pasó con la lluvia y la temperatura en los últimos días, para detectar a tiempo olas de calor, frío o helada y lluvias fuera de lo común en el área elegida.</p>
+      <div class="prose">
+        <p>El botón <strong>Estimar eventos recientes</strong> mira siempre <strong>hasta el último dato disponible</strong>, sin importar el período elegido en el paso 2. Los datos llegan con pocas horas de atraso, y el panel dice hasta cuándo hay datos. A diferencia de las alertas (paso 4), acá <strong>no se calculan anomalías contra un histórico</strong>: se comparan valores contra umbrales que podés editar.</p>
+        <ul>
+          <li><strong>Lluvia</strong> (IMERG, satélite, cada 30 minutos). Muestra los mm de las últimas 24 horas y de los últimos 7 días — la media del área y el máximo dentro del área, porque un promedio diluye una tormenta localizada — y por ventanas de 24 horas. Se compara con el total de lluvia de un <strong>mes normal</strong>. En 7 días lo esperable es cerca del 21-23 % del mes; un 25 % es normal, y lo que revela lluvia concentrada es que <strong>un solo día</strong> sume una parte grande del mes. Los umbrales de lluvia de 24 horas (30, 60 y 100 mm en el punto más lluvioso del área) son orientativos, no oficiales.</li>
+          <li><strong>Calor</strong> (CFSv2, modelo). Un día cuenta cuando la temperatura máxima supera el umbral (35 °C por defecto) en la mayor parte del área; varios días seguidos (3 por defecto) son compatibles con una ola de calor.</li>
+          <li><strong>Frío y helada</strong> (CFSv2). Temperatura mínima por debajo de 3 °C (riesgo de helada) o de 0 °C (helada probable). Con 3 °C en el abrigo meteorológico, la helada a nivel del suelo es probable en sitios expuestos.</li>
+        </ul>
+        <p>Los tres umbrales (calor, frío y días seguidos) se editan en pantalla. Cada día de la tabla de temperatura marca si la <strong>mayor parte del área</strong> (🔥 calor, ❄️ frío, 🧊 helada) o <strong>solo una parte</strong> (🟠, 🔹) cumple el umbral.</p>
+      </div>
+      <div class="callout">
+        <strong>Límites que conviene tener presentes</strong>
+        <p>La temperatura es de un <strong>modelo de unos 22 km</strong>, no de una estación: sirve para ver la tendencia, y un umbral fijo depende de que el modelo no tenga sesgo (una diferencia de 2 °C cambia el conteo). La helada es local y un píxel de ese tamaño la suaviza, por eso se habla de "probable". La lluvia reciente es <strong>preliminar</strong> y puede corregirse. El mes normal sale de IMERG 2001-2020 (no 2001-2025 como en el resto), y en un mes normalmente muy seco el porcentaje no es confiable, así que el panel lo avisa y conviene mirar los mm. Esta sección no usa la lluvia de ERA5-Land: los dos productos pueden diferir mucho de un mes a otro, y el balance hídrico de la app depende de ERA5 de punta a punta.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── SECCIÓN 4 — ALERTAS DEL ÁREA ───────────────────────── -->
+    <section class="block" id="s3">
+      <div class="block-head"><span class="tag">04</span></div>
       <h2>Alertas del área</h2>
       <p class="dek">Nueve variables clave en una sola pantalla, sin tener que consultarlas de a una. Es el atajo para responder "¿hay algo raro acá?" antes de entrar al detalle.</p>
       <div class="prose">
@@ -478,9 +503,9 @@
       </div>
     </section>
 
-    <!-- ───────────────────────── SECCIÓN 4 — TOPOGRÁFICAS ───────────────────────── -->
+    <!-- ───────────────────────── SECCIÓN 5 — TOPOGRÁFICAS ───────────────────────── -->
     <section class="block" id="s4">
-      <div class="block-head"><span class="tag">04</span></div>
+      <div class="block-head"><span class="tag">05</span></div>
       <h2>Topografía</h2>
       <p class="dek">Dos capas de contexto del terreno, independientes del período elegido: el relieve no cambia de una semana a otra.</p>
       <div class="var-grid">
@@ -505,9 +530,9 @@
       </div>
     </section>
 
-    <!-- ───────────────────────── SECCIÓN 5 — HÍDRICAS ───────────────────────── -->
+    <!-- ───────────────────────── SECCIÓN 6 — HÍDRICAS ───────────────────────── -->
     <section class="block theme-water" id="s5">
-      <div class="block-head"><span class="tag">05</span></div>
+      <div class="block-head"><span class="tag">06</span></div>
       <h2>Hidro-Clima — ERA5-Land</h2>
       <p class="dek">Catorce variables medidas directamente por el reanálisis climático, más cinco derivadas calculadas a partir de ellas. Todas a resolución diaria, ~11 km de celda.</p>
 
@@ -605,7 +630,7 @@
           </dl>
         </div>
         <div class="var-card">
-          <h3>Tasa de Precipitación (SDII) <span class="unit">mm/día lluvioso · suma ppt ÷ días con ppt &gt; 0</span></h3>
+          <h3>Tasa de Precipitación (SDII) <span class="unit">mm/día lluvioso · suma ppt ÷ días con ppt ≥ 1 mm</span></h3>
           <dl class="field">
             <dt>Responde</dt><dd>Cuando llueve, ¿llueve fuerte o llueve poco? A diferencia del promedio diario general, no se diluye con los días secos del período.</dd>
             <dt>Sirve para</dt><dd>Distinguir un régimen de lluvias frecuentes-suaves de uno de eventos intensos-espaciados — dos climas muy distintos que pueden tener la misma precipitación promedio.</dd>
@@ -695,9 +720,9 @@
       </div>
     </section>
 
-    <!-- ───────────────────────── SECCIÓN 4 — VEGETACIÓN ───────────────────────── -->
+    <!-- ───────────────────────── SECCIÓN 7 — VEGETACIÓN ───────────────────────── -->
     <section class="block theme-veg" id="s6">
-      <div class="block-head"><span class="tag">06</span></div>
+      <div class="block-head"><span class="tag">07</span></div>
       <h2>Vegetación — MODIS</h2>
       <p class="dek">Índices espectrales cada 8 días a 500 m, con máscara de nubes: vigor, estado hídrico, productividad, agua superficial e incendios. Buena resolución temporal para seguir tendencia; la resolución espacial es gruesa, así que un incendio o estrés muy chico y localizado puede diluirse con lo que lo rodea.</p>
 
@@ -763,15 +788,15 @@
       </div>
     </section>
 
-    <!-- ───────────────────────── SECCIÓN 5 — ALTA RESOLUCIÓN ───────────────────────── -->
+    <!-- ───────────────────────── SECCIÓN 8 — ALTA RESOLUCIÓN ───────────────────────── -->
     <section class="block theme-veg" id="s7">
-      <div class="block-head"><span class="tag">07</span></div>
+      <div class="block-head"><span class="tag">08</span></div>
       <h2>Alta resolución — Sentinel-2</h2>
       <p class="dek">Los mismos índices —NDVI, IAV e IAS— pero a 10-20 m en vez de 500 m. La contrapartida de ese detalle es el costo de cálculo: se recomienda usar esta sección sobre una parcela o un departamento chico, no una provincia completa.</p>
 
       <div class="var-grid">
         <div class="var-card">
-          <h3>NDVI e IAV <span class="unit">mismas etiquetas que la sección 5</span></h3>
+          <h3>NDVI e IAV <span class="unit">mismas etiquetas que la sección 7</span></h3>
           <dl class="field">
             <dt>Diferencia con MODIS</dt><dd>Misma fórmula y misma escala de interpretación — la única diferencia real es el tamaño de píxel. Usalos acá cuando la unidad de análisis es una parcela y 500 m de MODIS mezclaría demasiado terreno distinto en un solo píxel.</dd>
             <dt>Dónde se calculan</dt><dd>El IAV solo sobre vegetación densa (NDVI ≥ 0.6) y el IAS solo donde el NDVI es bajo (&lt; 0.6): son mutuamente excluyentes, así que cada píxel entra en uno o en otro, nunca en los dos. Ambos excluyen además las zonas urbanas.</dd>
@@ -797,7 +822,7 @@
     <section class="block" id="celular">
       <div class="block-head"><span class="tag">Celular</span></div>
       <h2>Uso en celular</h2>
-      <p class="dek">Hay una versión aparte de la app pensada para pantallas de teléfono. Tiene las mismas seis secciones y los mismos cálculos: lo que cambia es cómo se acomoda en pantalla.</p>
+      <p class="dek">Hay una versión aparte de la app pensada para pantallas de teléfono. Tiene las mismas secciones y los mismos cálculos: lo que cambia es cómo se acomoda en pantalla.</p>
       <div class="prose">
         <ul>
           <li><strong>Panel y mapa no se ven a la vez.</strong> En una pantalla chica no entran los dos, así que se alternan: el panel ocupa todo el ancho, y se pasa al mapa con el botón <strong>Ver mapa</strong> que está en la barra de título de las secciones 3 a 7. Para volver, el botón flotante <strong>Ver panel</strong> abajo a la derecha del mapa.</li>
@@ -819,6 +844,8 @@
           </thead>
           <tbody>
             <tr><td>ERA5-Land</td><td>Temperatura, humedad de suelo, lluvia, ETP, escurrimiento</td><td>~11 km</td><td>Diaria</td></tr>
+            <tr><td>IMERG V07 (NASA)</td><td>Lluvia reciente (eventos recientes) y, con IMERG V06 mensual, el total del mes normal</td><td>~10 km</td><td>Cada 30 min (reciente) · mensual (normal)</td></tr>
+            <tr><td>CFSv2 (NOAA)</td><td>Temperatura máxima y mínima de los últimos días (eventos recientes)</td><td>~22 km</td><td>Cada 6 horas</td></tr>
             <tr><td>MOD09A1 (MODIS)</td><td>NDVI, IAV, IAS, NBR/dNBR</td><td>500 m</td><td>Compuesto de 8 días</td></tr>
             <tr><td>MOD17A2H / A2HGF (MODIS)</td><td>NPP — productividad primaria neta</td><td>500 m</td><td>Compuesto de 8 días</td></tr>
             <tr><td>Sentinel-2 SR</td><td>NDVI, IAV, IAS de alta resolución</td><td>10–20 m</td><td>Según disponibilidad de escenas sin nube</td></tr>
