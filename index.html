@@ -362,8 +362,8 @@
     <ol>
       <li><a href="#intro"><span class="num">00</span>Qué es esta app</a></li>
       <li><a href="#flujo"><span class="num">00</span>Cómo se usa</a></li>
-      <li><a href="#s1"><span class="num">01</span>Área de interés</a></li>
-      <li><a href="#s2"><span class="num">02</span>Período de análisis</a></li>
+      <li><a href="#s2"><span class="num">01</span>Período de análisis</a></li>
+      <li><a href="#s1"><span class="num">02</span>Área de interés</a></li>
       <li><a href="#eventos"><span class="num">03</span>Eventos recientes</a></li>
       <li><a href="#s3"><span class="num">04</span>Alertas del área</a></li>
       <li><a href="#alertas"><span class="num">—</span>Cómo leer las alertas</a></li>
@@ -399,15 +399,15 @@
     <section class="block" id="flujo">
       <div class="block-head"><span class="tag">Flujo</span></div>
       <h2>Cómo se usa</h2>
-      <p class="dek">La app tiene ocho pasos numerados. Los dos primeros son transversales: el área y el período que elegís ahí se reutilizan en todo el resto — no hay que volver a definirlos para cada análisis. Los pasos 3 y 4 dan un panorama general (qué pasó en los últimos días y cómo está el período elegido); los pasos 5 a 8 son el detalle por variable. Todos los pasos desde el 3 vienen plegados: se despliegan tocando el título.</p>
+      <p class="dek">La app tiene ocho pasos numerados. Los dos primeros son transversales: el período y el área que elegís ahí se reutilizan en todo el resto — no hay que volver a definirlos para cada análisis. Los pasos 3 y 4 dan un panorama general (qué pasó en los últimos días y cómo está el período elegido); los pasos 5 a 8 son el detalle por variable. Todos los pasos desde el 3 vienen plegados: se despliegan tocando el título.</p>
       <div class="flow">
         <div class="flow-step">
           <div class="n">1</div>
-          <div><h4>Área de interés</h4><p>Un departamento, una cuenca hidrográfica, o un polígono dibujado a mano.</p></div>
+          <div><h4>Período de análisis</h4><p>Rango de fechas — puede ser una semana, un mes o varios años; el resto de la app se adapta a cualquier largo de ventana.</p></div>
         </div>
         <div class="flow-step">
           <div class="n">2</div>
-          <div><h4>Período de análisis</h4><p>Rango de fechas — puede ser una semana, un mes o varios años; el resto de la app se adapta a cualquier largo de ventana.</p></div>
+          <div><h4>Área de interés</h4><p>Un departamento o municipio de cualquier país (al abrir, la app intenta ubicarte sola) o un polígono dibujado a mano.</p></div>
         </div>
         <div class="flow-step">
           <div class="n">3</div>
@@ -436,24 +436,9 @@
       </div>
     </section>
 
-    <!-- ───────────────────────── SECCIÓN 1 ───────────────────────── -->
-    <section class="block theme-water" id="s1">
-      <div class="block-head"><span class="tag">01</span></div>
-      <h2>Área de interés</h2>
-      <p class="dek">Tres formas de definir dónde se calcula todo lo demás. La elección correcta depende de qué pregunta te estás haciendo.</p>
-      <div class="prose">
-        <ul>
-          <li><strong>Departamentos</strong> — la unidad administrativa (IGN). Es la opción natural si la pregunta es "¿cómo está tal departamento/partido?" o si vas a comparar el resultado con estadísticas censales, agropecuarias o administrativas que también vienen por departamento.</li>
-          <li><strong>Cuencas</strong> — subcuencas hidrográficas (HydroATLAS, nivel Pfafstetter 6). Conviene cuando la pregunta es sobre agua en sí misma: escurrimiento, inundación, disponibilidad — porque el agua no respeta límites administrativos, sigue la topografía.</li>
-          <li><strong>Dibujar polígono</strong> — un área personalizada, trazada a mano sobre el mapa. Es la única opción razonable para la sección 7 (alta resolución), donde conviene acotarse a una parcela o un área chica en vez de una unidad administrativa grande.</li>
-        </ul>
-        <p>También hay un botón <strong>Mi ubicación</strong>, que le pide la posición al navegador y selecciona directamente el departamento o la cuenca donde estás parado.</p>
-      </div>
-    </section>
-
-    <!-- ───────────────────────── SECCIÓN 2 ───────────────────────── -->
+    <!-- ───────────────────────── SECCIÓN 1 (PERÍODO) ───────────────────────── -->
     <section class="block theme-water" id="s2">
-      <div class="block-head"><span class="tag">02</span></div>
+      <div class="block-head"><span class="tag">01</span></div>
       <h2>Período de análisis</h2>
       <div class="prose">
         <p>Un rango de fechas único, compartido por el resto de la app. No hay un largo "correcto": una ventana corta (días) sirve para seguir un evento puntual —una tormenta, el arranque de un incendio—; una ventana larga (meses, años) sirve para ver tendencia o comparar contra el promedio histórico del lugar.</p>
@@ -463,13 +448,28 @@
       </div>
     </section>
 
+    <!-- ───────────────────────── SECCIÓN 2 (ÁREA) ───────────────────────── -->
+    <section class="block theme-water" id="s1">
+      <div class="block-head"><span class="tag">02</span></div>
+      <h2>Área de interés</h2>
+      <p class="dek">Dos formas de definir dónde se calcula todo lo demás. La elección correcta depende de qué pregunta te estás haciendo.</p>
+      <div class="prose">
+        <ul>
+          <li><strong>País › nivel 1 › nivel 2</strong> — la unidad administrativa más chica de cada país. En Argentina es el <strong>departamento</strong> (en Buenos Aires, el partido), con los límites del IGN; para el resto de los países, el "nivel 2" de geoBoundaries (departamento, municipio, comuna, distrito… según el país; los listados se rotulan "Nivel 1" y "Nivel 2"). Elegí el país, luego la provincia o estado, y por último el departamento o municipio; si la lista es larga, escribí en la caja de texto para filtrarla. Es la opción natural si la pregunta es "¿cómo está tal departamento?" o si vas a comparar el resultado con estadísticas administrativas. También podés <strong>hacer clic en el mapa</strong>: selecciona el área bajo el clic, en cualquier país.</li>
+          <li><strong>Dibujar polígono</strong> — un área personalizada, trazada a mano sobre el mapa. Es la única opción razonable para la sección 7 (alta resolución), donde conviene acotarse a una parcela o un área chica en vez de una unidad administrativa grande.</li>
+        </ul>
+        <p><strong>Ubicación inicial.</strong> Al abrir la app, el navegador te pide permiso para conocer tu posición y, si lo das, selecciona solo el área donde estás (en cualquier país). La ubicación no se guarda ni se envía a ningún lado: se usa únicamente para buscar el área que la contiene. Si no das permiso, elegí el país y el área en las listas o haciendo clic en el mapa. El botón <strong>Mi ubicación</strong> repite la búsqueda cuando quieras. Las cuencas hidrográficas ya no están como opción: para estudiar una cuenca, dibujá su polígono.</p>
+        <p><strong>Fuera de Argentina.</strong> La app funciona en otros países, pero <strong>solo está validada para Argentina</strong> (las pruebas se hicieron con datos argentinos): tomá los resultados como orientativos. Los umbrales, las categorías de humedad de suelo y las referencias están pensados para Argentina. En "Eventos recientes", las horas y los días se ajustan por la longitud del área, de forma aproximada, porque los husos horarios políticos no siguen los meridianos. La lluvia reciente (IMERG) cubre hasta unos 60° de latitud. Algunas áreas de nivel 2 de otros países son muy grandes. La app muestra la <strong>superficie del área elegida</strong> (en km²) y, si pasa de unos 50.000 km², avisa que las secciones de vegetación, de alta resolución y las alertas con su histórico pueden tardar mucho o fallar: en ese caso conviene dibujar un polígono más chico.</p>
+      </div>
+    </section>
+
     <!-- ───────────────────────── SECCIÓN 3 — EVENTOS RECIENTES ───────────────────────── -->
     <section class="block" id="eventos">
       <div class="block-head"><span class="tag">03</span></div>
       <h2>Eventos recientes</h2>
       <p class="dek">Qué pasó con la lluvia y la temperatura en los últimos días, para detectar a tiempo olas de calor, frío o helada y lluvias fuera de lo común en el área elegida.</p>
       <div class="prose">
-        <p>El botón <strong>Estimar eventos recientes</strong> mira siempre <strong>hasta el último dato disponible</strong>, sin importar el período elegido en el paso 2. Los datos llegan con pocas horas de atraso, y el panel dice hasta cuándo hay datos. A diferencia de las alertas (paso 4), acá <strong>no se calculan anomalías contra un histórico</strong>: se comparan valores contra umbrales que podés editar.</p>
+        <p>El botón <strong>Estimar eventos recientes</strong> mira siempre <strong>hasta el último dato disponible</strong>, sin importar el período elegido en el paso 1. Los datos llegan con pocas horas de atraso, y el panel dice hasta cuándo hay datos. A diferencia de las alertas (paso 4), acá <strong>no se calculan anomalías contra un histórico</strong>: se comparan valores contra umbrales que podés editar.</p>
         <ul>
           <li><strong>Lluvia</strong> (IMERG, satélite, cada 30 minutos). Muestra los mm de las últimas 24 horas y de los últimos 7 días — la media del área y el máximo dentro del área, porque un promedio diluye una tormenta localizada — y por ventanas de 24 horas. Se compara con el total de lluvia de un <strong>mes normal</strong>. En 7 días lo esperable es cerca del 21-23 % del mes; un 25 % es normal, y lo que revela lluvia concentrada es que <strong>un solo día</strong> sume una parte grande del mes. Los umbrales de lluvia de 24 horas (30, 60 y 100 mm en el punto más lluvioso del área) son orientativos, no oficiales.</li>
           <li><strong>Calor</strong> (CFSv2, modelo). Un día cuenta cuando la temperatura máxima supera el umbral (35 °C por defecto) en la mayor parte del área; varios días seguidos (3 por defecto) son compatibles con una ola de calor.</li>
@@ -851,8 +851,8 @@
             <tr><td>Sentinel-2 SR</td><td>NDVI, IAV, IAS de alta resolución</td><td>10–20 m</td><td>Según disponibilidad de escenas sin nube</td></tr>
             <tr><td>FIRMS</td><td>Focos de calor / detección de incendios activos</td><td>1 km</td><td>Diaria</td></tr>
             <tr><td>SRTM</td><td>Relieve (hillshade) y elevación</td><td>30 m</td><td>Estático</td></tr>
-            <tr><td>HydroATLAS</td><td>Límites de cuencas y subcuencas (nivel 6)</td><td>Vectorial</td><td>Estático</td></tr>
             <tr><td>IGN Argentina</td><td>Límites de departamentos</td><td>Vectorial</td><td>Estático</td></tr>
+            <tr><td>geoBoundaries (CGAZ)</td><td>Límites de país, nivel 1 y nivel 2 fuera de Argentina (licencia CC BY 4.0, William &amp; Mary geoLab)</td><td>Vectorial</td><td>Estático</td></tr>
           </tbody>
         </table>
       </div>
